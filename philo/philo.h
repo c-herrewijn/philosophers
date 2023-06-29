@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/06/29 18:14:07 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/06/29 18:42:02 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PHILO_H
 
 # include <stdlib.h>
-# include "../libft/libft.h"
+# include "libft.h"
 # include <stdio.h>
 # include <stdbool.h>
 
