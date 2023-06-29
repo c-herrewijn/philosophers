@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:11:55 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/06/29 18:37:28 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/06/29 18:44:37 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	validate_and_store_inputs(int argc, char *argv[], t_settings *settings)
 		|| !ft_is_pos_integer(argv[3]) || !ft_is_pos_integer(argv[4])
 		|| (argc == 6 && ft_is_pos_integer(argv[5]) == false))
 	{
-		printf("invalid input");
+		printf("invalid input\n");
 		return (-1);
 	}
 	settings->nr_philo = ft_atoi(argv[1]);
