@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   philo.h                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/26 11:55:02 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/06/29 18:36:39 by cherrewi      ########   odam.nl         */
+/*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
+/*   Updated: 2023/06/29 18:14:07 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#ifndef PHILO_H
+# define PHILO_H
 
-int	main(int argc, char *argv[])
+# include <stdlib.h>
+# include "../libft/libft.h"
+# include <stdio.h>
+# include <stdbool.h>
+
+typedef struct s_settings
 {
-	t_settings	settings;
+	size_t	nr_philo;
+	size_t	time_to_die;
+	size_t	time_to_eat;
+	size_t	time_to_sleep;
+	size_t	nr_to_eat;
+}	t_settings;
 
-	if (validate_and_store_inputs(argc, argv, &settings) < 0)
-		exit(1);
-	else
-		puts("OK");
-	return (0);
-}
+int	validate_and_store_inputs(int argc, char *argv[], t_settings *settings);
+
+#endif

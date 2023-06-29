@@ -1,1 +1,7 @@
+philo
+!philo/
+obj/
 *.md
+.vscode
+*.o
+*.a
