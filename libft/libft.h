@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 15:14:18 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/06/29 17:45:18 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/06/29 17:50:18 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		ft_isascii(int c);
 int		ft_isprint(int c);
 int		ft_isspace(int c);
 bool	ft_isinteger(char *int_str);
-bool	ft_is_positive_integer(char *int_str);
+bool	ft_is_pos_integer(char *int_str);
 size_t	ft_strlen(const char *s);
 void	*ft_memset(void *b, int c, size_t len);
 void	ft_bzero(void *b, size_t n);
