@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/03 19:24:31 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/03 19:41:17 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void *thread_function(void *input)
 	payload = (t_payload *)input;
 	
 	// print payload;
+	if (payload->philosopher->nr == 2)
+		sleep(1);
 	printf("total nr. philo: %zu, my nr %zu\n", payload->settings->nr_philo, payload->philosopher->nr);
 
 	return (NULL);
