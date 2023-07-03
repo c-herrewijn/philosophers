@@ -29,7 +29,7 @@ int	create_cutlery(t_settings *settings, pthread_mutex_t **forks)
 			j = 0;
 			while (j < i)
 			{
-				if (pthread_mutex_destroy(forks[i]) < 0)
+				if (pthread_mutex_destroy(&(*forks)[j]) < 0)
 					printf("problems destroying mutex lock nr: %zu\n", j);
 				j++;
 			}
