@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 15:26:50 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/03 17:18:14 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/03 17:32:26 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	free_philosophers(t_philosopher **philosophers)
 	free(philosophers);
 }
 
-t_philosopher	**create_philosophers(t_settings *settings)
+t_philosopher	**create_philosophers(t_settings *settings,
+	pthread_mutex_t	**forks)
 {
 	t_philosopher	**philosophers;
 	size_t			i;
@@ -49,6 +50,8 @@ t_philosopher	**create_philosophers(t_settings *settings)
 			return (NULL);
 		}
 		philosophers[i]->nr = i + 1;
+		philosophers[i]->fork_left = forks[i];
+		philosophers[i]->fork_right = forks[(i + 1) % settings->nr_philo];
 		i++;
 	}
 	philosophers[i] = NULL;

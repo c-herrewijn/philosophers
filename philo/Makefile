@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 IFLAGS = -I$(LIBFT_DIR)
 LFLAGS = -L$(LIBFT_DIR) -lft
 
-SRCS = main.c validations.c cutlery.c philosophers.c
+SRCS = main.c validations.c cutlery.c philosophers.c threads_create.c threads_launch.c
 OBJ_DIR = obj
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 LIBFT_DIR = ../libft
