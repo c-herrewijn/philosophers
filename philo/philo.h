@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/03 16:48:41 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/03 16:54:26 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_philosopher
 
 bool			input_valid(int argc, char *argv[]);
 void			store_inputs(int argc, char *argv[], t_settings *settings);
-int				create_cutlery(t_settings *settings, pthread_mutex_t **forks);
+pthread_mutex_t	**create_cutlery(t_settings *settings);
 t_philosopher	**create_philosophers(t_settings *settings);
 
 #endif
