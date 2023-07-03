@@ -6,17 +6,18 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/06/30 15:00:02 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/03 13:22:24 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <stdlib.h>
 # include "libft.h"
+# include <stdlib.h>
 # include <stdio.h>
 # include <stdbool.h>
+# include <pthread.h>
 
 typedef struct s_settings
 {
@@ -29,5 +30,6 @@ typedef struct s_settings
 
 bool	input_valid(int argc, char *argv[]);
 void	store_inputs(int argc, char *argv[], t_settings *settings);
+int		create_cutlery(t_settings *settings, pthread_mutex_t **forks);
 
 #endif

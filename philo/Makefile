@@ -1,9 +1,11 @@
 NAME = philo
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+# CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+# CFLAGS = -g -fsanitize=thread
 IFLAGS = -I$(LIBFT_DIR)
 LFLAGS = -L$(LIBFT_DIR) -lft
 
-SRCS = main.c validations.c
+SRCS = main.c validations.c cutlery.c
 OBJ_DIR = obj
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 LIBFT_DIR = ../libft
