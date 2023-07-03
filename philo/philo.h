@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/06/29 18:42:02 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/06/30 15:00:02 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_settings
 	size_t	nr_to_eat;
 }	t_settings;
 
-int	validate_and_store_inputs(int argc, char *argv[], t_settings *settings);
+bool	input_valid(int argc, char *argv[]);
+void	store_inputs(int argc, char *argv[], t_settings *settings);
 
 #endif
