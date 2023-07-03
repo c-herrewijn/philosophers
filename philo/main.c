@@ -16,13 +16,16 @@ int	main(int argc, char *argv[])
 {
 	t_settings		settings;
 	pthread_mutex_t	*forks;
+	t_philosopher	**philosophers;
 
 	if (input_valid(argc, argv) == false)
 		return (1);
 	store_inputs(argc, argv, &settings);
 	if (create_cutlery(&settings, &forks) < 0)
 		return (1);
-	// create_philopher_objects();
+	philosophers = create_philosophers(&settings);
+	if (philosophers == NULL)
+		return (1);
 	// (create monitoring();)
 	// create_thread_per_philopher();
 	// wait_for_philosophers();
