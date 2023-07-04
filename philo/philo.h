@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/04 13:55:10 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/04 20:51:15 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,16 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 typedef struct s_settings
 {
-	size_t	nr_philo;
-	size_t	time_to_die;
-	size_t	time_to_eat;
-	size_t	time_to_sleep;
-	size_t	nr_to_eat;
+	size_t			nr_philo;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			nr_to_eat;
+	struct timeval	start_time;
 }	t_settings;
 
 typedef struct s_philosopher
@@ -45,5 +47,6 @@ t_philosopher	**create_philosophers(t_settings *settings,
 pthread_t		**create_thread_arr(t_settings *settings);
 int				launch_threads(t_settings *settings,
 					t_philosopher **philosophers, pthread_t **threads);
+void			ms_sleep(size_t ms, struct timeval *start);
 
 #endif

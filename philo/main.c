@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:55:02 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/04 16:13:36 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/04 21:55:53 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	main(int argc, char *argv[])
 	t_philosopher	**philosophers;
 	pthread_t		**threads;
 
+	if (gettimeofday(&(settings.start_time), NULL) < 0)
+		return (1);
 	if (input_valid(argc, argv) == false)
 		return (1);
 	store_inputs(argc, argv, &settings);
