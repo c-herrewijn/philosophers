@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/03 19:41:17 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/04 16:11:24 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,25 @@
 
 void *thread_function(void *input)
 {
-	t_payload	*payload;
+	t_philosopher *philosopher;
 
-	payload = (t_payload *)input;
-	
-	// print payload;
-	if (payload->philosopher->nr == 2)
-		sleep(1);
-	printf("total nr. philo: %zu, my nr %zu\n", payload->settings->nr_philo, payload->philosopher->nr);
-
+	philosopher = (t_philosopher *)input;
+	pthread_mutex_lock(philosopher->settings_lock);
+	printf("total nr. philo: %zu, my nr %zu\n", philosopher->settings->nr_philo, philosopher->nr);
+	pthread_mutex_unlock(philosopher->settings_lock);
+	// todo: eat + sleap (+ think)
 	return (NULL);
 }
-
 
 int	launch_threads(t_settings *settings, t_philosopher **philosophers, pthread_t **threads)
 {
 	int			result;
 	size_t		i;
-	t_payload	payload;
 
 	i = 0;
-	payload.settings = settings;
 	while (i < settings->nr_philo)
 	{
-		payload.philosopher = philosophers[i];
-		result = pthread_create(threads[i], NULL, thread_function, (void *)(&payload));
+		result = pthread_create(threads[i], NULL, thread_function, (void *)(philosophers[i]));
 		if (result < 0)
 		{
 			printf("thread creation error");

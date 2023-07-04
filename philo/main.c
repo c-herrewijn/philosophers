@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:55:02 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/03 19:22:19 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/04 16:13:36 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	join_threads(pthread_t **threads)
 int	main(int argc, char *argv[])
 {
 	t_settings		settings;
+	pthread_mutex_t	settings_lock;
 	pthread_mutex_t	**forks;
 	t_philosopher	**philosophers;
 	pthread_t		**threads;
@@ -43,9 +44,10 @@ int	main(int argc, char *argv[])
 	forks = create_cutlery(&settings);
 	if (forks == NULL)
 		return (1);	// todo: free all data
-	philosophers = create_philosophers(&settings, forks);
+	philosophers = create_philosophers(&settings, forks, &settings_lock);
 	if (philosophers == NULL)
 		return (1); // todo: free all data
+	pthread_mutex_init(&settings_lock, NULL);  // todo check response
 	threads = create_thread_arr(&settings);
 	if (threads == NULL)
 		return (1); // todo: free all data
@@ -54,10 +56,6 @@ int	main(int argc, char *argv[])
 
 	join_threads(threads);
 		
-
-	// threads = create_threads(&settings, forks, philosophers);
-		
-
 	// debug:
 	// size_t i;
 	// i = 0;
