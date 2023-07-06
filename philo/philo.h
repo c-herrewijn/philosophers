@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/06 12:48:52 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/06 17:12:16 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ pthread_t		**create_thread_arr(t_settings *settings);
 int				launch_threads(t_settings *settings,
 					t_philosopher **philosophers, pthread_t **threads);
 void			ms_sleep(size_t ms, struct timeval *start);
-void			print_timestamp(t_settings *settings);
+void			print_timestamp(t_settings *settings,
+					pthread_mutex_t *settings_lock);
 
 #endif

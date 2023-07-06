@@ -14,12 +14,14 @@ int main(void)
 {
 	t_settings		settings;
 	struct timeval	t;
+	pthread_mutex_t	settings_lock;
 
 	gettimeofday(&(settings.start_time), NULL);
+	pthread_mutex_init(&settings_lock, NULL);
 
 	gettimeofday(&t, NULL);
 	printf("time:");
-	print_timestamp(&settings);
+	print_timestamp(&settings, &settings_lock);
 	print_time_raw(&t);
 
 	puts("\nsleeping 1 ms:\n");
@@ -27,7 +29,7 @@ int main(void)
 
 	gettimeofday(&t, NULL);
 	printf("time:");
-	print_timestamp(&settings);
+	print_timestamp(&settings, &settings_lock);
 	print_time_raw(&t);
 
 	puts("\nsleeping 10 ms:\n");
@@ -35,7 +37,7 @@ int main(void)
 
 	gettimeofday(&t, NULL);
 	printf("time:");
-	print_timestamp(&settings);
+	print_timestamp(&settings, &settings_lock);
 	print_time_raw(&t);
 
 	puts("\nsleeping 100 ms:\n");
@@ -43,7 +45,7 @@ int main(void)
 
 	gettimeofday(&t, NULL);
 	printf("time:");
-	print_timestamp(&settings);
+	print_timestamp(&settings, &settings_lock);
 	print_time_raw(&t);
 
 	puts("\nsleeping 1000 ms:\n");
@@ -51,7 +53,7 @@ int main(void)
 
 	gettimeofday(&t, NULL);
 	printf("time:");
-	print_timestamp(&settings);
+	print_timestamp(&settings, &settings_lock);
 	print_time_raw(&t);
 
 	puts("\nsleeping 4321 ms:\n");
@@ -59,7 +61,7 @@ int main(void)
 
 	gettimeofday(&t, NULL);
 	printf("time:");
-	print_timestamp(&settings);
+	print_timestamp(&settings, &settings_lock);
 	print_time_raw(&t);
 	
 	puts("\nsleeping 42 ms:\n");
@@ -67,6 +69,6 @@ int main(void)
 
 	gettimeofday(&t, NULL);
 	printf("time:");
-	print_timestamp(&settings);
+	print_timestamp(&settings, &settings_lock);
 	print_time_raw(&t);
 }
