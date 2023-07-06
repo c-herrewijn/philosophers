@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 13:02:52 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/06 15:11:58 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/06 21:42:43 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	initiate_mutex(pthread_mutex_t **forks, size_t i)
 		printf("problems creating mutex lock\n");
 		free(forks[i]);
 		forks[i] = NULL;
-		destroy_and_free_cutlery(forks); // todo, call free functions only from main
+		destroy_and_free_cutlery(forks);
 		return (-1);
 	}
 	return (0);

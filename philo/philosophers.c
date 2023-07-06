@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 15:26:50 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/06 15:02:49 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/06 21:48:46 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ static t_philosopher	**malloc_philosopher_arr(t_settings *settings)
 	return (philosophers);
 }
 
+static t_philosopher	*malloc_philosopher(t_philosopher **philosophers)
+{
+	t_philosopher	*philosopher;
+
+	philosopher = malloc(sizeof(t_philosopher));
+	if (philosopher == NULL)
+	{
+		printf("malloc error\n");
+		free_philosophers(philosophers);
+		return (NULL);
+	}
+	return (philosopher);
+}
+
 t_philosopher	**create_philosophers(t_settings *settings,
 	pthread_mutex_t	**forks, pthread_mutex_t *settings_lock)
 {
@@ -52,18 +66,15 @@ t_philosopher	**create_philosophers(t_settings *settings,
 	i = 0;
 	while (i < settings->nr_philo)
 	{
-		philosophers[i] = malloc(sizeof(t_philosopher));
+		philosophers[i] = malloc_philosopher(philosophers);
 		if (philosophers[i] == NULL)
-		{
-			printf("malloc error\n");
-			free_philosophers(philosophers);
 			return (NULL);
-		}
 		philosophers[i]->nr = i + 1;
 		philosophers[i]->fork_left = forks[i];
 		philosophers[i]->fork_right = forks[(i + 1) % settings->nr_philo];
 		philosophers[i]->settings = settings;
 		philosophers[i]->settings_lock = settings_lock;
+		philosophers[i]->times_eaten = 0;
 		i++;
 	}
 	philosophers[i] = NULL;
