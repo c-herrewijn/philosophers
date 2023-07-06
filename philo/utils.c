@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/04 17:54:48 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/04 21:53:36 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/06 12:49:13 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,12 @@ void	ms_sleep(size_t ms, struct timeval *start)
 		gettimeofday(&end, NULL);
 		ms_passed = calc_ms_passed(start, &end);
 	}
+}
+
+void	print_timestamp(t_settings *settings)
+{
+	struct timeval	end;
+
+	gettimeofday(&end, NULL);
+	printf("%zu", calc_ms_passed(&(settings->start_time), &end));
 }
