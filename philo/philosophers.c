@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 15:26:50 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/04 13:51:01 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/06 15:02:49 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@ void	free_philosophers(t_philosopher **philosophers)
 	free(philosophers);
 }
 
-t_philosopher	**create_philosophers(t_settings *settings,
-	pthread_mutex_t	**forks, pthread_mutex_t *settings_lock)
+static t_philosopher	**malloc_philosopher_arr(t_settings *settings)
 {
 	t_philosopher	**philosophers;
-	size_t			i;
 
 	philosophers = malloc((settings->nr_philo + 1) * sizeof(t_philosopher *));
 	if (philosophers == NULL)
@@ -39,6 +37,18 @@ t_philosopher	**create_philosophers(t_settings *settings,
 		printf("malloc error\n");
 		return (NULL);
 	}
+	return (philosophers);
+}
+
+t_philosopher	**create_philosophers(t_settings *settings,
+	pthread_mutex_t	**forks, pthread_mutex_t *settings_lock)
+{
+	t_philosopher	**philosophers;
+	size_t			i;
+
+	philosophers = malloc_philosopher_arr(settings);
+	if (philosophers == NULL)
+		return (NULL);
 	i = 0;
 	while (i < settings->nr_philo)
 	{
