@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/04 17:54:48 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/06 16:39:20 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/06 17:55:43 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,16 @@ void	ms_sleep(size_t ms, struct timeval *start)
 	}
 }
 
-void	print_timestamp(t_settings *settings, pthread_mutex_t *settings_lock)
+struct timeval	print_timestamp(t_settings *settings,
+	pthread_mutex_t *settings_lock)
 {
 	struct timeval	start;
-	struct timeval	end;
+	struct timeval	now;
 
 	pthread_mutex_lock(settings_lock);
 	start = settings->start_time;
 	pthread_mutex_unlock(settings_lock);
-	gettimeofday(&end, NULL);
-	printf("%zu ", calc_ms_passed(&start, &end));
+	gettimeofday(&now, NULL);
+	printf("%5zu ", calc_ms_passed(&start, &now));
+	return (now);
 }

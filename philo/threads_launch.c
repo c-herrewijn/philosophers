@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/04 16:11:24 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/06 17:54:46 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 void *thread_function(void *input)
 {
-	t_philosopher *philosopher;
+	t_philosopher	*philosopher;
 
 	philosopher = (t_philosopher *)input;
-	pthread_mutex_lock(philosopher->settings_lock);
-	printf("total nr. philo: %zu, my nr %zu\n", philosopher->settings->nr_philo, philosopher->nr);
-	pthread_mutex_unlock(philosopher->settings_lock);
-	// todo: eat + sleap (+ think)
+	eat(philosopher);
+	// todo: sleep (+ think)
 	return (NULL);
 }
 
@@ -37,7 +35,7 @@ int	launch_threads(t_settings *settings, t_philosopher **philosophers, pthread_t
 		{
 			printf("thread creation error");
 			return (-1);
-			; // todo: error handling
+			// todo: error handling
 		}
 		i++;
 	}
