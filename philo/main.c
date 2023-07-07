@@ -6,13 +6,28 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:55:02 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/06 21:50:41 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/07 16:49:28 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	join_threads(pthread_t **threads)
+void	free_all(t_data *data)
+{
+	destroy_and_free_cutlery(data->forks);
+	free_philosophers(data->philosophers);
+	free_thread_arr(data->threads);
+}
+
+// put all pointer variables to NULL, for better error handling
+static void	init_data(t_data *data)
+{
+	data->forks = NULL;
+	data->philosophers = NULL;
+	data->threads = NULL;
+}
+
+static int	join_threads(pthread_t **threads)
 {
 	size_t	i;
 
@@ -33,25 +48,26 @@ int	main(int argc, char *argv[])
 {
 	t_settings		settings;
 	pthread_mutex_t	settings_lock;
-	pthread_mutex_t	**forks;
-	t_philosopher	**philosophers;
-	pthread_t		**threads;
+	t_data			data;
 
 	if (input_valid(argc, argv) == false)
 		return (1);
 	store_inputs(argc, argv, &settings);
-	forks = create_cutlery(&settings);
-	if (forks == NULL)
+	init_data(&data);
+	data.forks = create_cutlery(&data, &settings);
+	if (data.forks == NULL)
 		return (1);
-	philosophers = create_philosophers(&settings, forks, &settings_lock);
-	if (philosophers == NULL)
+	data.philosophers = create_philosophers(&data, &settings, &settings_lock);
+	if (data.philosophers == NULL)
 		return (1);
+	data.threads = create_thread_arr(&data, &settings);
+	if (data.threads == NULL)
+		return (1);
+	
 	pthread_mutex_init(&settings_lock, NULL);
-	threads = create_thread_arr(&settings);
-	if (threads == NULL)
+	if (launch_threads(&settings, data.philosophers, data.threads) < 0)
 		return (1);
-	if (launch_threads(&settings, philosophers, threads) < 0)
-		return (1);
-	join_threads(threads);
+	join_threads(data.threads);
+	free_all(&data);
 	return (0);
 }

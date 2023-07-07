@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:22:27 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/03 19:20:52 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/07 16:41:46 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	free_thread_arr(pthread_t **threads)
 	free(threads);
 }
 
-pthread_t	**create_thread_arr(t_settings *settings)
+pthread_t	**create_thread_arr(t_data *data, t_settings *settings)
 {
 	pthread_t	**threads;
 	size_t		i;
@@ -36,6 +36,7 @@ pthread_t	**create_thread_arr(t_settings *settings)
 	if (threads == NULL)
 	{
 		printf("malloc error\n");
+		free_all(data);
 		return (NULL);
 	}
 	i = 0;
@@ -45,7 +46,7 @@ pthread_t	**create_thread_arr(t_settings *settings)
 		if (threads[i] == NULL)
 		{
 			printf("malloc error\n");
-			free_thread_arr(threads);
+			free_all(data);
 			return (NULL);
 		}
 		i++;

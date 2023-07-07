@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 13:02:52 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/06 21:42:43 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/07 16:33:58 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	destroy_and_free_cutlery(pthread_mutex_t **forks)
 	while (forks[i] != NULL)
 	{
 		if (pthread_mutex_destroy(forks[i]) < 0)
-			printf("problems destroying mutex lock nr: %zu\n", i);
+			printf("problems destroying mutex lock for fork nr: %zu\n", i);
 		free(forks[i]);
 		i++;
 	}
@@ -43,7 +43,7 @@ static int	initiate_mutex(pthread_mutex_t **forks, size_t i)
 }
 
 // the forks philosophers use to eat are implemented as mutex locks 
-pthread_mutex_t	**create_cutlery(t_settings *settings)
+pthread_mutex_t	**create_cutlery(t_data *data, t_settings *settings)
 {
 	pthread_mutex_t	**forks;
 	size_t			i;
@@ -52,6 +52,7 @@ pthread_mutex_t	**create_cutlery(t_settings *settings)
 	if (forks == NULL)
 	{
 		printf("malloc error\n");
+		free_all(data);
 		return (NULL);
 	}
 	i = 0;
@@ -61,7 +62,7 @@ pthread_mutex_t	**create_cutlery(t_settings *settings)
 		if (forks[i] == NULL)
 		{
 			printf("malloc error\n");
-			destroy_and_free_cutlery(forks);
+			free_all(data);
 			return (NULL);
 		}
 		if (initiate_mutex(forks, i) < 0)
