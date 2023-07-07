@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/06 17:17:40 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/07 13:11:24 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/07 13:22:37 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	philo_eat(t_philosopher *philosopher)
 	if (philosopher->times_eaten == 0 && philosopher->nr % 2 == 0)
 	{
 		gettimeofday(&now, NULL);
-		ms_sleep(1 + (time_to_eat - 1) / 2, &now);
+		ms_sleep(1 + time_to_eat / 2, &now);
 	}
 	take_fork('l', philosopher);
 	take_fork('r', philosopher);
