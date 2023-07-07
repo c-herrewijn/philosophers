@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/06 17:17:40 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/06 21:37:45 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/07 12:07:56 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	take_fork(char fork_char, t_philosopher *philosopher)
 	}
 }
 
-void	eat(t_philosopher *philosopher)
+void	philo_eat(t_philosopher *philosopher)
 {
 	size_t			time_to_eat;
 	struct timeval	now;
@@ -55,4 +55,21 @@ void	eat(t_philosopher *philosopher)
 	}
 	take_fork('l', philosopher);
 	take_fork('r', philosopher);
+}
+
+void	philo_sleep(t_philosopher *philosopher)
+{
+	size_t			time_to_sleep;
+	struct timeval	now;
+	size_t			timestamp;
+
+	pthread_mutex_lock(philosopher->settings_lock);
+	time_to_sleep = philosopher->settings->time_to_sleep;
+	pthread_mutex_unlock(philosopher->settings_lock);
+	gettimeofday(&now, NULL);
+	pthread_mutex_lock(philosopher->settings_lock);
+	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
+	pthread_mutex_unlock(philosopher->settings_lock);
+	printf("%5zu %zu is sleeping\n", timestamp, philosopher->nr); 
+	ms_sleep(time_to_sleep, &now);
 }
