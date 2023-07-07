@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/07 13:11:07 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/07 14:00:21 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	*thread_function(void *input)
 	while (nr_to_eat == -1 || philosopher->times_eaten < nr_to_eat)
 	{
 		philo_eat(philosopher);
+		if (philosopher->times_eaten == nr_to_eat)
+			break ;
 		philo_sleep(philosopher);
 		philo_think(philosopher);
 	}
