@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/07 12:05:20 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/07 12:24:43 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_settings
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
-	size_t			nr_to_eat;
+	int				nr_to_eat;
 	struct timeval	start_time;
 }	t_settings;
 
@@ -37,7 +37,7 @@ typedef struct s_philosopher
 	pthread_mutex_t	*fork_right;
 	t_settings		*settings;
 	pthread_mutex_t	*settings_lock;
-	size_t			times_eaten;
+	int				times_eaten;
 }	t_philosopher;
 
 bool			input_valid(int argc, char *argv[]);
@@ -54,5 +54,6 @@ struct timeval	print_timestamp(t_settings *settings,
 size_t			calc_ms_passed(struct timeval *start, struct timeval *end);
 void			philo_eat(t_philosopher *philosopher);
 void			philo_sleep(t_philosopher *philosopher);
+void			philo_think(t_philosopher *philosopher);
 
 #endif

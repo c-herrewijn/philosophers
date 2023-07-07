@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/06 17:17:40 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/07 12:07:56 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/07 13:11:24 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,16 @@ void	philo_sleep(t_philosopher *philosopher)
 	pthread_mutex_unlock(philosopher->settings_lock);
 	printf("%5zu %zu is sleeping\n", timestamp, philosopher->nr); 
 	ms_sleep(time_to_sleep, &now);
+}
+
+void	philo_think(t_philosopher *philosopher)
+{
+	struct timeval	now;
+	size_t			timestamp;
+
+	gettimeofday(&now, NULL);
+	pthread_mutex_lock(philosopher->settings_lock);
+	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
+	pthread_mutex_unlock(philosopher->settings_lock);
+	printf("%5zu %zu is thinking\n", timestamp, philosopher->nr); 
 }
