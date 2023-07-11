@@ -6,7 +6,7 @@ IFLAGS = -I$(LIBFT_DIR)
 LFLAGS = -L$(LIBFT_DIR) -lft
 
 SRCS =	main.c validations.c cutlery.c philosophers.c threads_create.c \
-		threads_launch.c time_utils.c eat_sleep_think.c
+		threads_launch.c time_utils.c eat_sleep_think.c monitoring.c
 OBJ_DIR = obj
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 LIBFT_DIR = ../libft

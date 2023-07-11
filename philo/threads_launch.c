@@ -6,11 +6,21 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 13:41:20 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 20:47:41 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+bool	check_simul_running(t_settings *settings, t_locks *locks)
+{
+	bool	simul_running;
+	
+	pthread_mutex_lock(&(locks->settings_lock));
+	simul_running = settings->simul_running;
+	pthread_mutex_unlock(&(locks->settings_lock));
+	return (simul_running);
+}
 
 void	*thread_function(void *input)
 {
@@ -23,11 +33,20 @@ void	*thread_function(void *input)
 	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	while (nr_to_eat == -1 || philosopher->times_eaten < nr_to_eat)
 	{
-		philo_eat(philosopher);
-		if (philosopher->times_eaten == nr_to_eat)
+		if (check_simul_running(philosopher->settings, philosopher->locks))
+			philo_eat(philosopher);
+		else
+			break;
+		if (philosopher->times_eaten == nr_to_eat) // todo protect lookup
 			break ;
-		philo_sleep(philosopher);
-		philo_think(philosopher);
+		if (check_simul_running(philosopher->settings, philosopher->locks))
+			philo_sleep(philosopher);
+		else
+			break;
+		if (check_simul_running(philosopher->settings, philosopher->locks))
+			philo_think(philosopher);
+		else
+			break;
 	}
 	return (NULL);
 }

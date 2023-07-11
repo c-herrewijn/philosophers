@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:55:02 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 13:43:47 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 20:44:43 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ void	free_all(t_data *data, t_locks *locks)
 	destroy_mutex_locks(locks);
 }
 
+// NOTE: overall start_time need to be set before the philosophers are created.
 static int	init_data(t_data *data, t_settings *settings,
 	t_locks *locks)
 {
+	gettimeofday(&(settings->start_time), NULL);
 	data->philosophers = NULL;
 	data->threads = NULL;
 	data->forks = create_cutlery(settings);
@@ -50,6 +52,7 @@ static int	init_data(t_data *data, t_settings *settings,
 		data->forks = NULL;
 		return (-1);
 	}
+	settings->simul_running = true;
 	return (0);
 }
 
@@ -102,8 +105,13 @@ int	main(int argc, char *argv[])
 		destroy_mutex_locks(&locks);
 		return (1);
 	}
-	if (launch_threads(&settings, data.philosophers, data.threads) < 0
-		|| join_threads(data.threads) < 0)
+	if (launch_threads(&settings, data.philosophers, data.threads) < 0)
+	{
+		free_all(&data, &locks);
+		return (1);
+	}
+	monitoring(&data, &settings, &locks);
+	if (join_threads(data.threads) < 0)
 	{
 		free_all(&data, &locks);
 		return (1);

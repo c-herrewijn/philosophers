@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 13:37:14 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 21:19:25 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_settings
 	size_t			time_to_sleep;
 	int				nr_to_eat;
 	struct timeval	start_time;
+	bool			simul_running;	
 }	t_settings;
 
 typedef struct s_locks
@@ -44,6 +45,7 @@ typedef struct s_philosopher
 	t_settings		*settings;
 	t_locks			*locks;
 	int				times_eaten;
+	struct timeval	last_eaten;
 }	t_philosopher;
 
 typedef struct s_data
@@ -65,12 +67,15 @@ void			free_thread_arr(pthread_t **threads);
 void			free_all(t_data *data, t_locks *locks);
 int				launch_threads(t_settings *settings,
 					t_philosopher **philosophers, pthread_t **threads);
-void			ms_sleep(size_t ms, struct timeval *start);
+void			ms_sleep(size_t ms, struct timeval *start, t_settings *settings,
+					t_locks *locks);
 struct timeval	print_timestamp(t_settings *settings,
 					pthread_mutex_t *settings_lock);
 size_t			calc_ms_passed(struct timeval *start, struct timeval *end);
 void			philo_eat(t_philosopher *philosopher);
 void			philo_sleep(t_philosopher *philosopher);
 void			philo_think(t_philosopher *philosopher);
+void			monitoring(t_data *data, t_settings *settings, t_locks *locks);
+bool			check_simul_running(t_settings *settings, t_locks *locks);
 
 #endif
