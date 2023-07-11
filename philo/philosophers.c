@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 15:26:50 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 12:08:04 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 13:43:24 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_philosopher	*malloc_philosopher(t_philosopher **philosophers)
 }
 
 t_philosopher	**create_philosophers(t_data *data, t_settings *settings,
-	pthread_mutex_t *settings_lock)
+	t_locks *locks)
 {
 	t_philosopher	**philosophers;
 	size_t			i;
@@ -73,7 +73,7 @@ t_philosopher	**create_philosophers(t_data *data, t_settings *settings,
 		philosophers[i]->fork_left = data->forks[i];
 		philosophers[i]->fork_right = data->forks[(i + 1) % settings->nr_philo];
 		philosophers[i]->settings = settings;
-		philosophers[i]->settings_lock = settings_lock;
+		philosophers[i]->locks = locks;
 		philosophers[i]->times_eaten = 0;
 		i++;
 	}

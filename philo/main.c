@@ -6,28 +6,35 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:55:02 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 12:00:17 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 13:43:47 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_all(t_data *data)
+static void	destroy_mutex_locks(t_locks *locks)
+{
+	pthread_mutex_destroy(&(locks->print_lock));
+	pthread_mutex_destroy(&(locks->settings_lock));
+}
+
+void	free_all(t_data *data, t_locks *locks)
 {
 	destroy_and_free_cutlery(data->forks);
 	free_philosophers(data->philosophers);
 	free_thread_arr(data->threads);
+	destroy_mutex_locks(locks);
 }
 
 static int	init_data(t_data *data, t_settings *settings,
-	pthread_mutex_t *settings_lock)
+	t_locks *locks)
 {
 	data->philosophers = NULL;
 	data->threads = NULL;
 	data->forks = create_cutlery(settings);
 	if (data->forks == NULL)
 		return (-1);
-	data->philosophers = create_philosophers(data, settings, settings_lock);
+	data->philosophers = create_philosophers(data, settings, locks);
 	if (data->philosophers == NULL)
 	{
 		destroy_and_free_cutlery(data->forks);
@@ -63,10 +70,16 @@ static int	join_threads(pthread_t **threads)
 	return (0);
 }
 
-static int	init_lock(pthread_mutex_t *lock)
+static int	init_locks(t_locks *locks)
 {
-	if (pthread_mutex_init(lock, NULL) < 0)
+	if (pthread_mutex_init(&(locks->print_lock), NULL) < 0)
 	{
+		printf("problems creating mutex lock\n");
+		return (-1);
+	}
+	if (pthread_mutex_init(&(locks->settings_lock), NULL) < 0)
+	{
+		pthread_mutex_destroy(&(locks->print_lock));
 		printf("problems creating mutex lock\n");
 		return (-1);
 	}
@@ -77,30 +90,24 @@ int	main(int argc, char *argv[])
 {
 	t_settings		settings;
 	t_data			data;
-	pthread_mutex_t	settings_lock;
+	t_locks			locks;
 
 	if (input_valid(argc, argv) == false)
 		return (1);
 	store_inputs(argc, argv, &settings);
-	if (init_data(&data, &settings, &settings_lock) < 0)
+	if (init_locks(&locks) < 0)
 		return (1);
-	if (init_lock(&settings_lock) < 0)
+	if (init_data(&data, &settings, &locks) < 0)
 	{
-		free_all(&data);
+		destroy_mutex_locks(&locks);
 		return (1);
 	}
-	if (launch_threads(&settings, data.philosophers, data.threads) < 0)
+	if (launch_threads(&settings, data.philosophers, data.threads) < 0
+		|| join_threads(data.threads) < 0)
 	{
-		free_all(&data);
-		pthread_mutex_destroy(&settings_lock);
+		free_all(&data, &locks);
 		return (1);
 	}
-	if (join_threads(data.threads) < 0)
-	{
-		free_all(&data);
-		pthread_mutex_destroy(&settings_lock);
-		return (1);
-	}
-	free_all(&data);
+	free_all(&data, &locks);
 	return (0);
 }
