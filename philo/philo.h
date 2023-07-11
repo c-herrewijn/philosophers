@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/07 16:47:54 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 11:06:13 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ typedef struct s_data
 
 bool			input_valid(int argc, char *argv[]);
 void			store_inputs(int argc, char *argv[], t_settings *settings);
-pthread_mutex_t	**create_cutlery(t_data *data, t_settings *settings);
+pthread_mutex_t	**create_cutlery(t_settings *settings);
 t_philosopher	**create_philosophers(t_data *data, t_settings *settings,
 					pthread_mutex_t *settings_lock);
-pthread_t		**create_thread_arr(t_data *data, t_settings *settings);
+pthread_t		**create_thread_arr(t_settings *settings);
 void			destroy_and_free_cutlery(pthread_mutex_t **forks);
 void			free_philosophers(t_philosopher **philosophers);
 void			free_thread_arr(pthread_t **threads);

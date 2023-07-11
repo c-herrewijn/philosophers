@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 15:26:50 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/07 16:37:23 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 12:08:04 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,13 @@ t_philosopher	**create_philosophers(t_data *data, t_settings *settings,
 
 	philosophers = malloc_philosopher_arr(settings);
 	if (philosophers == NULL)
-	{
-		free_all(data);
 		return (NULL);
-	}
 	i = 0;
 	while (i < settings->nr_philo)
 	{
 		philosophers[i] = malloc_philosopher(philosophers);
 		if (philosophers[i] == NULL)
-		{
-			free_all(data);
 			return (NULL);
-		}
 		philosophers[i]->nr = i + 1;
 		philosophers[i]->fork_left = data->forks[i];
 		philosophers[i]->fork_right = data->forks[(i + 1) % settings->nr_philo];
