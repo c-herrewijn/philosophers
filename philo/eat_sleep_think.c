@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/06 17:17:40 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/12 16:11:04 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/12 16:27:58 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ void	philo_eat(t_philosopher *philosopher)
 		ms_sleep(1 + time_to_eat / 2, &now, philosopher->settings, philosopher->locks);
 	}
 	take_fork('l', philosopher);
-	take_fork('r', philosopher);
+	if (philosopher->fork_left != philosopher->fork_right)
+		take_fork('r', philosopher);
 	pthread_mutex_unlock(philosopher->fork_left);
-	pthread_mutex_unlock(philosopher->fork_right);
+	if (philosopher->fork_left != philosopher->fork_right)
+		pthread_mutex_unlock(philosopher->fork_right);
 }
 
 void	philo_sleep(t_philosopher *philosopher)
