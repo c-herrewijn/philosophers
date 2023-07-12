@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/06 17:17:40 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/07 13:51:12 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 14:07:49 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,28 @@ static void	take_fork(char fork_char, t_philosopher *philosopher)
 	size_t			timestamp;
 	size_t			time_to_eat;
 
-	pthread_mutex_lock(philosopher->settings_lock);
+	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	time_to_eat = philosopher->settings->time_to_eat;
-	pthread_mutex_unlock(philosopher->settings_lock);
+	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	if (fork_char == 'l')
 		pthread_mutex_lock(philosopher->fork_left);
 	else
 		pthread_mutex_lock(philosopher->fork_right);
+	pthread_mutex_lock(&(philosopher->locks->print_lock));
 	gettimeofday(&now, NULL);
-	pthread_mutex_lock(philosopher->settings_lock);
+	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
-	pthread_mutex_unlock(philosopher->settings_lock);
+	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	printf("%5zu %zu has taken a fork\n", timestamp, philosopher->nr);
 	if (fork_char == 'r')
 	{
 		printf("%5zu %zu is eating\n", timestamp, philosopher->nr); 
+		pthread_mutex_unlock(&(philosopher->locks->print_lock));
 		ms_sleep(time_to_eat, &now);
 		philosopher->times_eaten += 1;
 	}
+	else
+		pthread_mutex_unlock(&(philosopher->locks->print_lock));
 }
 
 void	philo_eat(t_philosopher *philosopher)
@@ -44,10 +48,10 @@ void	philo_eat(t_philosopher *philosopher)
 	int				nr_to_eat;
 	struct timeval	now;
 
-	pthread_mutex_lock(philosopher->settings_lock);
+	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	time_to_eat = philosopher->settings->time_to_eat;
 	nr_to_eat = philosopher->settings->nr_to_eat;
-	pthread_mutex_unlock(philosopher->settings_lock);
+	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	if (philosopher->times_eaten == 0 && philosopher->nr % 2 == 0)
 	{
 		gettimeofday(&now, NULL);
@@ -68,16 +72,18 @@ void	philo_sleep(t_philosopher *philosopher)
 	struct timeval	now;
 	size_t			timestamp;
 
+	pthread_mutex_lock(&(philosopher->locks->print_lock));
 	gettimeofday(&now, NULL);
-	pthread_mutex_lock(philosopher->settings_lock);
+	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
-	pthread_mutex_unlock(philosopher->settings_lock);
+	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	printf("%5zu %zu is sleeping\n", timestamp, philosopher->nr);
+	pthread_mutex_unlock(&(philosopher->locks->print_lock));
 	pthread_mutex_unlock(philosopher->fork_left);
 	pthread_mutex_unlock(philosopher->fork_right);
-	pthread_mutex_lock(philosopher->settings_lock);
+	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	time_to_sleep = philosopher->settings->time_to_sleep;
-	pthread_mutex_unlock(philosopher->settings_lock);
+	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	ms_sleep(time_to_sleep, &now);
 }
 
@@ -86,9 +92,11 @@ void	philo_think(t_philosopher *philosopher)
 	struct timeval	now;
 	size_t			timestamp;
 
+	pthread_mutex_lock(&(philosopher->locks->print_lock));
 	gettimeofday(&now, NULL);
-	pthread_mutex_lock(philosopher->settings_lock);
+	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
-	pthread_mutex_unlock(philosopher->settings_lock);
+	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	printf("%5zu %zu is thinking\n", timestamp, philosopher->nr); 
+	pthread_mutex_unlock(&(philosopher->locks->print_lock));
 }

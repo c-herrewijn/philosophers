@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 13:02:52 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/06 21:42:43 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 11:05:44 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,22 @@ void	destroy_and_free_cutlery(pthread_mutex_t **forks)
 	while (forks[i] != NULL)
 	{
 		if (pthread_mutex_destroy(forks[i]) < 0)
-			printf("problems destroying mutex lock nr: %zu\n", i);
+			printf("problems destroying mutex lock for fork nr: %zu\n", i);
+		free(forks[i]);
+		i++;
+	}
+	free(forks);
+}
+
+static void	free_cutlery(pthread_mutex_t **forks)
+{
+	size_t	i;
+
+	if (forks == NULL)
+		return ;
+	i = 0;
+	while (forks[i] != NULL)
+	{
 		free(forks[i]);
 		i++;
 	}
@@ -61,7 +76,7 @@ pthread_mutex_t	**create_cutlery(t_settings *settings)
 		if (forks[i] == NULL)
 		{
 			printf("malloc error\n");
-			destroy_and_free_cutlery(forks);
+			free_cutlery(forks);
 			return (NULL);
 		}
 		if (initiate_mutex(forks, i) < 0)

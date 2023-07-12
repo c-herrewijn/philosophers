@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/07 14:00:21 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 13:41:20 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	*thread_function(void *input)
 	int				nr_to_eat;
 
 	philosopher = (t_philosopher *)input;
-	pthread_mutex_lock(philosopher->settings_lock);
+	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	nr_to_eat = philosopher->settings->nr_to_eat;
-	pthread_mutex_unlock(philosopher->settings_lock);
+	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	while (nr_to_eat == -1 || philosopher->times_eaten < nr_to_eat)
 	{
 		philo_eat(philosopher);
