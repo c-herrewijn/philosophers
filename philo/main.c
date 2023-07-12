@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:55:02 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 13:43:47 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/12 19:50:41 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	destroy_mutex_locks(t_locks *locks)
 	pthread_mutex_destroy(&(locks->settings_lock));
 }
 
-void	free_all(t_data *data, t_locks *locks)
+static void	free_all(t_data *data, t_locks *locks)
 {
 	destroy_and_free_cutlery(data->forks);
 	free_philosophers(data->philosophers);
@@ -26,9 +26,28 @@ void	free_all(t_data *data, t_locks *locks)
 	destroy_mutex_locks(locks);
 }
 
+static int	join_threads(pthread_t **threads)
+{
+	size_t	i;
+
+	i = 0;
+	while (threads[i] != NULL)
+	{
+		if (pthread_join(*(threads[i]), NULL) < 0)
+		{
+			printf("error joining threads");
+			return (-1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+// NOTE: overall start_time need to be set before the philosophers are created.
 static int	init_data(t_data *data, t_settings *settings,
 	t_locks *locks)
 {
+	gettimeofday(&(settings->start_time), NULL);
 	data->philosophers = NULL;
 	data->threads = NULL;
 	data->forks = create_cutlery(settings);
@@ -50,39 +69,7 @@ static int	init_data(t_data *data, t_settings *settings,
 		data->forks = NULL;
 		return (-1);
 	}
-	return (0);
-}
-
-static int	join_threads(pthread_t **threads)
-{
-	size_t	i;
-
-	i = 0;
-	while (threads[i] != NULL)
-	{
-		if (pthread_join(*(threads[i]), NULL) < 0)
-		{
-			printf("error joining threads");
-			return (-1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-static int	init_locks(t_locks *locks)
-{
-	if (pthread_mutex_init(&(locks->print_lock), NULL) < 0)
-	{
-		printf("problems creating mutex lock\n");
-		return (-1);
-	}
-	if (pthread_mutex_init(&(locks->settings_lock), NULL) < 0)
-	{
-		pthread_mutex_destroy(&(locks->print_lock));
-		printf("problems creating mutex lock\n");
-		return (-1);
-	}
+	settings->simul_running = true;
 	return (0);
 }
 
@@ -92,18 +79,20 @@ int	main(int argc, char *argv[])
 	t_data			data;
 	t_locks			locks;
 
-	if (input_valid(argc, argv) == false)
-		return (1);
-	store_inputs(argc, argv, &settings);
-	if (init_locks(&locks) < 0)
+	if (parse_input(argc, argv, &settings, &locks) < 0)
 		return (1);
 	if (init_data(&data, &settings, &locks) < 0)
 	{
 		destroy_mutex_locks(&locks);
 		return (1);
 	}
-	if (launch_threads(&settings, data.philosophers, data.threads) < 0
-		|| join_threads(data.threads) < 0)
+	if (launch_threads(&settings, data.philosophers, data.threads) < 0)
+	{
+		free_all(&data, &locks);
+		return (1);
+	}
+	monitoring(&data, &settings, &locks);
+	if (join_threads(data.threads) < 0)
 	{
 		free_all(&data, &locks);
 		return (1);

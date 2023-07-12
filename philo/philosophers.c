@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 15:26:50 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 13:43:24 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/11 16:11:38 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_philosopher	**create_philosophers(t_data *data, t_settings *settings,
 		philosophers[i]->settings = settings;
 		philosophers[i]->locks = locks;
 		philosophers[i]->times_eaten = 0;
+		philosophers[i]->last_eaten = settings->start_time;
 		i++;
 	}
 	philosophers[i] = NULL;
