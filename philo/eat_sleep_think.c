@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/06 17:17:40 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 21:38:13 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/12 16:11:04 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,15 @@ static void	take_fork(char fork_char, t_philosopher *philosopher)
 	if (fork_char == 'r')
 	{
 		if (check_simul_running(philosopher->settings, philosopher->locks))
+		{
 			printf("%5zu %zu is eating\n", timestamp, philosopher->nr); 
+			pthread_mutex_lock(&(philosopher->locks->settings_lock));
+			philosopher->times_eaten += 1;
+			philosopher->last_eaten = now;
+			pthread_mutex_unlock(&(philosopher->locks->settings_lock));
+		}
 		pthread_mutex_unlock(&(philosopher->locks->print_lock));
 		ms_sleep(time_to_eat, &now, philosopher->settings, philosopher->locks);
-		pthread_mutex_lock(&(philosopher->locks->settings_lock));
-		philosopher->times_eaten += 1;
-		philosopher->last_eaten = now;
-		pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	}
 	else
 		pthread_mutex_unlock(&(philosopher->locks->print_lock));
