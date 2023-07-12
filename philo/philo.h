@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 21:19:25 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/12 19:51:37 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ typedef struct s_data
 	pthread_t		**threads;
 }	t_data;
 
-bool			input_valid(int argc, char *argv[]);
-void			store_inputs(int argc, char *argv[], t_settings *settings);
+int				parse_input(int argc, char *argv[], t_settings *settings,
+				t_locks *locks);
 pthread_mutex_t	**create_cutlery(t_settings *settings);
 t_philosopher	**create_philosophers(t_data *data, t_settings *settings,
 					t_locks *locks);
@@ -64,7 +64,6 @@ pthread_t		**create_thread_arr(t_settings *settings);
 void			destroy_and_free_cutlery(pthread_mutex_t **forks);
 void			free_philosophers(t_philosopher **philosophers);
 void			free_thread_arr(pthread_t **threads);
-void			free_all(t_data *data, t_locks *locks);
 int				launch_threads(t_settings *settings,
 					t_philosopher **philosophers, pthread_t **threads);
 void			ms_sleep(size_t ms, struct timeval *start, t_settings *settings,

@@ -6,11 +6,26 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/06 17:17:40 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/12 16:27:58 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/12 19:29:10 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	eat_with_forks(t_philosopher *philosopher, struct timeval now,
+	size_t timestamp, size_t time_to_eat)
+{
+	if (check_simul_running(philosopher->settings, philosopher->locks))
+	{
+		printf("%5zu %zu is eating\n", timestamp, philosopher->nr); 
+		pthread_mutex_lock(&(philosopher->locks->settings_lock));
+		philosopher->times_eaten += 1;
+		philosopher->last_eaten = now;
+		pthread_mutex_unlock(&(philosopher->locks->settings_lock));
+	}
+	pthread_mutex_unlock(&(philosopher->locks->print_lock));
+	ms_sleep(time_to_eat, &now, philosopher->settings, philosopher->locks);
+}
 
 static void	take_fork(char fork_char, t_philosopher *philosopher)
 {
@@ -33,18 +48,7 @@ static void	take_fork(char fork_char, t_philosopher *philosopher)
 	if (check_simul_running(philosopher->settings, philosopher->locks))
 		printf("%5zu %zu has taken a fork\n", timestamp, philosopher->nr);
 	if (fork_char == 'r')
-	{
-		if (check_simul_running(philosopher->settings, philosopher->locks))
-		{
-			printf("%5zu %zu is eating\n", timestamp, philosopher->nr); 
-			pthread_mutex_lock(&(philosopher->locks->settings_lock));
-			philosopher->times_eaten += 1;
-			philosopher->last_eaten = now;
-			pthread_mutex_unlock(&(philosopher->locks->settings_lock));
-		}
-		pthread_mutex_unlock(&(philosopher->locks->print_lock));
-		ms_sleep(time_to_eat, &now, philosopher->settings, philosopher->locks);
-	}
+		eat_with_forks(philosopher, now, timestamp, time_to_eat);
 	else
 		pthread_mutex_unlock(&(philosopher->locks->print_lock));
 }
@@ -62,7 +66,8 @@ void	philo_eat(t_philosopher *philosopher)
 	if (philosopher->times_eaten == 0 && philosopher->nr % 2 == 0)
 	{
 		gettimeofday(&now, NULL);
-		ms_sleep(1 + time_to_eat / 2, &now, philosopher->settings, philosopher->locks);
+		ms_sleep(1 + time_to_eat / 2, &now, philosopher->settings,
+			philosopher->locks);
 	}
 	take_fork('l', philosopher);
 	if (philosopher->fork_left != philosopher->fork_right)

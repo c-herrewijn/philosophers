@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/04 17:54:48 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 21:46:19 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/12 20:02:03 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ms_sleep(size_t ms, struct timeval *start, t_settings *settings,
 			simul_running = settings->simul_running;
 			pthread_mutex_unlock(&(locks->settings_lock));
 			if (simul_running == false)
-				break;
+				break ;
 		}
 		ms_passed_previous = ms_passed;
 	}

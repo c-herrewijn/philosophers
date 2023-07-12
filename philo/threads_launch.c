@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/12 19:11:05 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/12 20:01:15 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	check_simul_running(t_settings *settings, t_locks *locks)
 {
 	bool	simul_running;
-	
+
 	pthread_mutex_lock(&(locks->settings_lock));
 	simul_running = settings->simul_running;
 	pthread_mutex_unlock(&(locks->settings_lock));
@@ -43,7 +43,7 @@ void	*thread_function(void *input)
 		if (check_simul_running(philosopher->settings, philosopher->locks))
 			philo_eat(philosopher);
 		else
-			break;
+			break ;
 		if (philosopher->fork_left == philosopher->fork_right)
 		{
 			while (true)
@@ -55,11 +55,11 @@ void	*thread_function(void *input)
 		if (check_simul_running(philosopher->settings, philosopher->locks))
 			philo_sleep(philosopher);
 		else
-			break;
+			break ;
 		if (check_simul_running(philosopher->settings, philosopher->locks))
 			philo_think(philosopher);
 		else
-			break;
+			break ;
 	}
 	return (NULL);
 }
