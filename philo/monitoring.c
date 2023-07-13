@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/11 15:34:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/13 16:10:43 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/13 17:56:31 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static void	print_philo_died(t_data *data, t_settings *settings, t_locks *locks)
 	long int	last_eaten_sec;
 	int			last_eaten_usec;
 
-	pthread_mutex_lock(&(locks->settings_lock));
 	pthread_mutex_lock(&(locks->print_lock));
+	pthread_mutex_lock(&(locks->settings_lock));
 	settings->simul_running = false;
 	set_oldest_last_eaten_time(data, &last_eaten_sec, &last_eaten_usec);
 	i = 0;
@@ -55,8 +55,8 @@ static void	print_philo_died(t_data *data, t_settings *settings, t_locks *locks)
 					&(data->philosophers[i]->last_eaten))
 				+ settings->time_to_die;
 			printf("%5zu %zu died\n", time_of_death, data->philosophers[i]->nr);
-			pthread_mutex_unlock(&(locks->print_lock));
 			pthread_mutex_unlock(&(locks->settings_lock));
+			pthread_mutex_unlock(&(locks->print_lock));
 			break ;
 		}
 		i++;

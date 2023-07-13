@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/13 15:05:08 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/13 17:52:16 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void			ms_sleep(size_t ms, struct timeval *start, t_settings *settings,
 struct timeval	print_timestamp(t_settings *settings,
 					pthread_mutex_t *settings_lock);
 size_t			calc_ms_passed(struct timeval *start, struct timeval *end);
-void			philo_eat(t_philosopher *philosopher);
-void			philo_sleep(t_philosopher *philosopher);
-void			philo_think(t_philosopher *philosopher);
+int				philo_eat(t_philosopher *philosopher);
+int				philo_sleep(t_philosopher *philosopher);
+int				philo_think(t_philosopher *philosopher);
 void			monitoring(t_data *data, t_settings *settings, t_locks *locks);
 bool			check_simul_running(t_settings *settings, t_locks *locks);
 

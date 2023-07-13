@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/13 15:00:57 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/13 21:41:45 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,48 +22,41 @@ bool	check_simul_running(t_settings *settings, t_locks *locks)
 	return (simul_running);
 }
 
+static bool	eaten_enough(t_philosopher	*philosopher)
+{
+	pthread_mutex_lock(&(philosopher->locks->settings_lock));
+	if (philosopher->times_eaten == philosopher->settings->nr_to_eat)
+	{
+		pthread_mutex_unlock(&(philosopher->locks->settings_lock));
+		return (true);
+	}
+	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
+	return (false);	
+}
+
 void	*thread_function(void *input)
 {
 	t_philosopher	*philosopher;
-	int				nr_to_eat;
-
+	
 	philosopher = (t_philosopher *)input;
-	pthread_mutex_lock(&(philosopher->locks->settings_lock));
-	nr_to_eat = philosopher->settings->nr_to_eat;
-	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	while (true)
 	{
-		pthread_mutex_lock(&(philosopher->locks->settings_lock));
-		if (philosopher->times_eaten == nr_to_eat)
+		if (eaten_enough(philosopher) == false)
 		{
-			pthread_mutex_unlock(&(philosopher->locks->settings_lock));
-			break ;
+			if (philo_think(philosopher) < 0)
+				break ;
+			if (philo_eat(philosopher) < 0)
+				break ;
+			if (philo_sleep(philosopher) < 0)
+				break ;
 		}
-		pthread_mutex_unlock(&(philosopher->locks->settings_lock));
-		if (check_simul_running(philosopher->settings, philosopher->locks))
-			philo_eat(philosopher);
 		else
-			break ;
-		if (philosopher->fork_left == philosopher->fork_right)
-		{
-			while (true)
-			{
-				if (!check_simul_running(philosopher->settings, philosopher->locks))
-					return (NULL);
-			}
-		}
-		if (check_simul_running(philosopher->settings, philosopher->locks))
-			philo_sleep(philosopher);
-		else
-			break ;
-		if (check_simul_running(philosopher->settings, philosopher->locks))
-			philo_think(philosopher);
-		else
-			break ;
+			break;
 	}
 	return (NULL);
 }
 
+// set 'start_time' and init 'last_eaten' before launching threads
 int	launch_threads(t_settings *settings, t_philosopher **philosophers,
 	pthread_t **threads)
 {
