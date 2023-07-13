@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:55:02 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/12 19:50:41 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/13 15:04:27 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,9 @@ static int	join_threads(pthread_t **threads)
 	return (0);
 }
 
-// NOTE: overall start_time need to be set before the philosophers are created.
 static int	init_data(t_data *data, t_settings *settings,
 	t_locks *locks)
 {
-	gettimeofday(&(settings->start_time), NULL);
 	data->philosophers = NULL;
 	data->threads = NULL;
 	data->forks = create_cutlery(settings);

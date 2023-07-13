@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/12 20:01:15 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/13 15:00:57 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,18 @@ int	launch_threads(t_settings *settings, t_philosopher **philosophers,
 {
 	size_t		i;
 
-	i = 0;
 	if (gettimeofday(&(settings->start_time), NULL) < 0)
 	{
 		printf("gettimeofday error");
 		return (-1);
 	}
+	i = 0;
+	while (i < settings->nr_philo)
+	{
+		philosophers[i]->last_eaten = settings->start_time;
+		i++;
+	}
+	i = 0;
 	while (i < settings->nr_philo)
 	{
 		if (pthread_create(threads[i], NULL, thread_function,
