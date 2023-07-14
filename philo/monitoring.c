@@ -34,7 +34,8 @@ static void	set_oldest_last_eaten_time(t_data *data, long int *last_eaten_sec,
 	}
 }
 
-static void	print_philo_died(t_data *data, t_settings *settings, t_locks *locks)
+static void	print_philo_died(t_data *data, t_settings *settings, t_locks *locks,
+	struct timeval	*now)
 {
 	size_t		i;
 	size_t		time_of_death;
@@ -51,9 +52,7 @@ static void	print_philo_died(t_data *data, t_settings *settings, t_locks *locks)
 		if (data->philosophers[i]->last_eaten.tv_sec == last_eaten_sec
 			&& data->philosophers[i]->last_eaten.tv_usec == last_eaten_usec)
 		{
-			time_of_death = calc_ms_passed(&(settings->start_time),
-					&(data->philosophers[i]->last_eaten))
-				+ settings->time_to_die;
+			time_of_death = calc_ms_passed(&(settings->start_time), now);
 			printf("%5zu %zu died\n", time_of_death, data->philosophers[i]->nr);
 			pthread_mutex_unlock(&(locks->settings_lock));
 			pthread_mutex_unlock(&(locks->print_lock));
@@ -101,7 +100,7 @@ static bool	philo_starved(t_data *data, t_settings *settings, t_locks *locks)
 		pthread_mutex_unlock(&(locks->settings_lock));
 		if (calc_ms_passed(&last_eaten, &now) >= time_to_die)
 		{
-			print_philo_died(data, settings, locks);
+			print_philo_died(data, settings, locks, &now);
 			return (true);
 		}
 		i++;
