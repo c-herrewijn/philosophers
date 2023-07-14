@@ -6,18 +6,25 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/04 17:54:48 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/12 20:02:03 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/14 18:24:23 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/*
+returns end - start in milli seconds
+returns 0 if start > end 
+*/
 size_t	calc_ms_passed(struct timeval *start, struct timeval *end)
 {
 	size_t			ms_passed;
 	long int		seconds_passed;
 	int				us_passed;
 
+	if (start->tv_sec > end->tv_sec
+		|| (start->tv_sec == end->tv_sec && start->tv_usec > end->tv_usec))
+		return (0);
 	seconds_passed = (end->tv_sec - start->tv_sec);
 	if (end->tv_usec > start->tv_usec)
 		us_passed = (end->tv_usec - start->tv_usec);
