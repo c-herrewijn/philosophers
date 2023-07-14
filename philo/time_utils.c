@@ -50,7 +50,7 @@ void	ms_sleep(size_t ms, struct timeval *start, t_settings *settings,
 	ms_passed_previous = ms_passed;
 	while (ms_passed < ms)
 	{
-		usleep(100);
+		usleep(400);
 		gettimeofday(&end, NULL);
 		ms_passed = calc_ms_passed(start, &end);
 		if (ms_passed != ms_passed_previous)
