@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:29:51 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/13 22:07:11 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/14 19:28:19 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static int	take_fork_left(t_philosopher *philosopher)
 		return (-1);
 	}
 	pthread_mutex_lock(&(philosopher->locks->print_lock));
-	gettimeofday(&now, NULL);
 	pthread_mutex_lock(&(philosopher->locks->settings_lock));
+	gettimeofday(&now, NULL);
 	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
 	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	printf("%5zu %zu has taken a fork\n", timestamp, philosopher->nr);
@@ -69,8 +69,8 @@ static int	take_fork_right(t_philosopher *philosopher, size_t time_to_eat)
 		return (-1);
 	}
 	pthread_mutex_lock(&(philosopher->locks->print_lock));
-	gettimeofday(&now, NULL);
 	pthread_mutex_lock(&(philosopher->locks->settings_lock));
+	gettimeofday(&now, NULL);
 	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
 	philosopher->times_eaten += 1;
 	philosopher->last_eaten = now;
