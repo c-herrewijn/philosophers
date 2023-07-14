@@ -126,6 +126,6 @@ void	monitoring(t_data *data, t_settings *settings, t_locks *locks)
 		if (philo_starved(data, settings, locks))
 			break ;
 		gettimeofday(&now, NULL);
-		ms_sleep(2, &now, settings, locks);
+		ms_sleep_pure(2, &now);
 	}
 }

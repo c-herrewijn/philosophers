@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/13 17:52:16 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/14 19:42:48 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int				launch_threads(t_settings *settings,
 					t_philosopher **philosophers, pthread_t **threads);
 void			ms_sleep(size_t ms, struct timeval *start, t_settings *settings,
 					t_locks *locks);
+void			ms_sleep_pure(size_t ms, struct timeval *start);
 struct timeval	print_timestamp(t_settings *settings,
 					pthread_mutex_t *settings_lock);
 size_t			calc_ms_passed(struct timeval *start, struct timeval *end);
