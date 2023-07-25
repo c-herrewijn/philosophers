@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/11 15:34:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/25 18:04:33 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/25 18:10:19 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	set_oldest_last_eaten_time(t_data *data, long int *last_eaten_sec,
 }
 
 static void	print_philo_died(t_data *data, t_settings *settings, t_locks *locks,
-	struct timeval	*now)
+	struct timeval *now)
 {
 	size_t		i;
 	size_t		time_of_death;

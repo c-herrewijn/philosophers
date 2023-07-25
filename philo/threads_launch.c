@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/13 21:41:45 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/25 18:10:39 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ static bool	eaten_enough(t_philosopher	*philosopher)
 		return (true);
 	}
 	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
-	return (false);	
+	return (false);
 }
 
 void	*thread_function(void *input)
 {
 	t_philosopher	*philosopher;
-	
+
 	philosopher = (t_philosopher *)input;
 	while (true)
 	{
@@ -51,7 +51,7 @@ void	*thread_function(void *input)
 				break ;
 		}
 		else
-			break;
+			break ;
 	}
 	return (NULL);
 }

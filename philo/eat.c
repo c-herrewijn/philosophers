@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:29:51 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/25 18:02:16 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/25 18:09:08 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,8 @@ int	philo_eat(t_philosopher *philosopher)
 	time_to_eat = philosopher->settings->time_to_eat;
 	times_eaten = philosopher->times_eaten;
 	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
-		if (times_eaten == 0)
-	{
+	if (times_eaten == 0)
 		give_priority(philosopher);
-	}
 	if (is_single_philo)
 	{
 		single_philo(philosopher);
