@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/11 15:34:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/13 17:56:31 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/25 18:04:33 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,7 @@ static bool	philo_starved(t_data *data, t_settings *settings, t_locks *locks)
 	struct timeval	now;
 	struct timeval	last_eaten;
 
-	pthread_mutex_lock(&(locks->settings_lock));
 	time_to_die = settings->time_to_die;
-	pthread_mutex_unlock(&(locks->settings_lock));
 	i = 0;
 	gettimeofday(&now, NULL);
 	while (data->philosophers[i] != NULL)
@@ -115,10 +113,8 @@ void	monitoring(t_data *data, t_settings *settings, t_locks *locks)
 	struct timeval	start_time;
 	int				nr_to_eat;
 
-	pthread_mutex_lock(&(locks->settings_lock));
 	start_time = settings->start_time;
 	nr_to_eat = settings->nr_to_eat;
-	pthread_mutex_unlock(&(locks->settings_lock));
 	while (true)
 	{
 		if (nr_to_eat != -1 && all_done_eating(data, settings, locks))

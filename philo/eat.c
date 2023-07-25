@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:29:51 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/14 19:28:19 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/25 18:02:16 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ static void	give_priority(t_philosopher *philosopher)
 	size_t			time_to_eat;
 	struct timeval	now;
 
-	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	times_eaten = philosopher->times_eaten;
 	philo_nr = philosopher->nr;
 	time_to_eat = philosopher->settings->time_to_eat;
-	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	if (times_eaten == 0 && philo_nr % 2 == 0)
 	{
 		gettimeofday(&now, NULL);
@@ -46,10 +44,8 @@ static int	take_fork_left(t_philosopher *philosopher)
 		return (-1);
 	}
 	pthread_mutex_lock(&(philosopher->locks->print_lock));
-	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	gettimeofday(&now, NULL);
 	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
-	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
 	printf("%5zu %zu has taken a fork\n", timestamp, philosopher->nr);
 	pthread_mutex_unlock(&(philosopher->locks->print_lock));
 	return (0);
