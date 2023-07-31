@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/06 17:17:40 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 21:14:05 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 22:34:57 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,16 @@ int	philo_sleep(t_philosopher *philo)
 	if (check_simul_running(philo->settings, philo->locks)
 		== false)
 	{
+		pthread_mutex_unlock(philo->fork_left);
+		pthread_mutex_unlock(philo->fork_right);
 		pthread_mutex_unlock(&(philo->locks->print_lock));
 		return (-1);
 	}
 	gettimeofday(&now, NULL);
 	print_timestamp(&(philo->settings->start_time), &now, philo->nr);
 	printf(" %zu is sleeping\n", philo->nr);
+	pthread_mutex_unlock(philo->fork_left);
+	pthread_mutex_unlock(philo->fork_right);
 	pthread_mutex_unlock(&(philo->locks->print_lock));
 	time_to_sleep = philo->settings->time_to_sleep;
 	ms_sleep(time_to_sleep, &now, philo->settings, philo->locks);

@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:29:51 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 22:00:03 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 23:04:12 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ static int	take_fork_right(t_philosopher *philo, size_t time_to_eat)
 	printf(" %zu is eating\n", philo->nr);
 	pthread_mutex_unlock(&(philo->locks->print_lock));
 	ms_sleep(time_to_eat, &now, philo->settings, philo->locks);
-	pthread_mutex_unlock(philo->fork_left);
-	pthread_mutex_unlock(philo->fork_right);
 	return (0);
 }
 
