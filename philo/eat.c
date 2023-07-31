@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:29:51 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 20:13:00 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 22:00:03 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ static int	take_fork_left(t_philosopher *philo)
 	struct timeval	now;
 
 	pthread_mutex_lock(philo->fork_left);
+	pthread_mutex_lock(&(philo->locks->print_lock));
 	if (check_simul_running(philo->settings, philo->locks)
 		== false)
 	{
+		pthread_mutex_unlock(&(philo->locks->print_lock));
 		pthread_mutex_unlock(philo->fork_left);
 		return (-1);
 	}
-	pthread_mutex_lock(&(philo->locks->print_lock));
 	gettimeofday(&now, NULL);
 	print_timestamp(&(philo->settings->start_time), &now, philo->nr);
 	printf(" %zu has taken a fork\n", philo->nr);
@@ -55,14 +56,15 @@ static int	take_fork_right(t_philosopher *philo, size_t time_to_eat)
 	struct timeval	now;
 
 	pthread_mutex_lock(philo->fork_right);
+	pthread_mutex_lock(&(philo->locks->print_lock));
 	if (check_simul_running(philo->settings, philo->locks)
 		== false)
 	{
+		pthread_mutex_unlock(&(philo->locks->print_lock));
 		pthread_mutex_unlock(philo->fork_left);
 		pthread_mutex_unlock(philo->fork_right);
 		return (-1);
 	}
-	pthread_mutex_lock(&(philo->locks->print_lock));
 	pthread_mutex_lock(&(philo->locks->settings_lock));
 	gettimeofday(&now, NULL);
 	philo->times_eaten += 1;
@@ -101,9 +103,9 @@ int	philo_eat(t_philosopher *philo)
 	size_t	time_to_eat;
 	size_t	times_eaten;
 
-	pthread_mutex_lock(&(philo->locks->settings_lock));
 	is_single_philo = (philo->fork_left == philo->fork_right);
 	time_to_eat = philo->settings->time_to_eat;
+	pthread_mutex_lock(&(philo->locks->settings_lock));
 	times_eaten = philo->times_eaten;
 	pthread_mutex_unlock(&(philo->locks->settings_lock));
 	if (times_eaten == 0)
