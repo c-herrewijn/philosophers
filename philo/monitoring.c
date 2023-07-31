@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/11 15:34:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 22:28:50 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 23:12:43 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,6 @@ void	monitoring(t_data *data, t_settings *settings, t_locks *locks)
 		if (philo_starved(data, settings, locks))
 			break ;
 		gettimeofday(&now, NULL);
-		ms_sleep_pure(2, &now);
+		usleep(200);
 	}
 }
