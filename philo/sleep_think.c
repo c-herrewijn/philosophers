@@ -6,45 +6,45 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/06 17:17:40 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 13:28:54 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 20:07:51 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	philo_sleep(t_philosopher *philosopher)
+int	philo_sleep(t_philosopher *philo)
 {
 	size_t			time_to_sleep;
 	struct timeval	now;
 
-	if (check_simul_running(philosopher->settings, philosopher->locks)
+	if (check_simul_running(philo->settings, philo->locks)
 		== false)
 	{
 		return (-1);
 	}
-	pthread_mutex_lock(&(philosopher->locks->print_lock));
+	pthread_mutex_lock(&(philo->locks->print_lock));
 	gettimeofday(&now, NULL);
-	print_timestamp(philosopher, &now);
-	printf(" %zu is sleeping\n", philosopher->nr);
-	pthread_mutex_unlock(&(philosopher->locks->print_lock));
-	time_to_sleep = philosopher->settings->time_to_sleep;
-	ms_sleep(time_to_sleep, &now, philosopher->settings, philosopher->locks);
+	print_timestamp(&(philo->settings->start_time), &now, philo->nr);
+	printf(" %zu is sleeping\n", philo->nr);
+	pthread_mutex_unlock(&(philo->locks->print_lock));
+	time_to_sleep = philo->settings->time_to_sleep;
+	ms_sleep(time_to_sleep, &now, philo->settings, philo->locks);
 	return (0);
 }
 
-int	philo_think(t_philosopher *philosopher)
+int	philo_think(t_philosopher *philo)
 {
 	struct timeval	now;
 
-	if (check_simul_running(philosopher->settings, philosopher->locks)
+	if (check_simul_running(philo->settings, philo->locks)
 		== false)
 	{
 		return (-1);
 	}
-	pthread_mutex_lock(&(philosopher->locks->print_lock));
+	pthread_mutex_lock(&(philo->locks->print_lock));
 	gettimeofday(&now, NULL);
-	print_timestamp(philosopher, &now);
-	printf(" %zu is thinking\n", philosopher->nr);
-	pthread_mutex_unlock(&(philosopher->locks->print_lock));
+	print_timestamp(&(philo->settings->start_time), &now, philo->nr);
+	printf(" %zu is thinking\n", philo->nr);
+	pthread_mutex_unlock(&(philo->locks->print_lock));
 	return (0);
 }

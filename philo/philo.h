@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 13:15:25 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 20:10:14 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ void			ms_sleep(size_t ms, struct timeval *start, t_settings *settings,
 					t_locks *locks);
 void			ms_sleep_pure(size_t ms, struct timeval *start);
 size_t			calc_ms_passed(struct timeval *start, struct timeval *end);
-int				philo_eat(t_philosopher *philosopher);
-int				philo_sleep(t_philosopher *philosopher);
-int				philo_think(t_philosopher *philosopher);
+int				philo_eat(t_philosopher *philo);
+int				philo_sleep(t_philosopher *philo);
+int				philo_think(t_philosopher *philo);
 void			monitoring(t_data *data, t_settings *settings, t_locks *locks);
 bool			check_simul_running(t_settings *settings, t_locks *locks);
-void			print_timestamp(t_philosopher *philosopher,
-					struct timeval *now);
+void			print_timestamp(struct timeval *start_time, struct timeval *now,
+					size_t philo_nr);
 
 #endif

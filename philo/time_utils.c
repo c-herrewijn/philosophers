@@ -6,14 +6,16 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/04 17:54:48 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 13:35:22 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 20:13:15 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 // prints timestamp in different colors
-void	print_timestamp(t_philosopher *philosopher, struct timeval *now)
+// void	print_timestamp(t_philosopher *philosopher, struct timeval *now)
+void	print_timestamp(struct timeval *start_time, struct timeval *now,
+	size_t philo_nr)
 {
 	size_t			timestamp;
 	size_t			nr_colors;
@@ -27,8 +29,8 @@ void	print_timestamp(t_philosopher *philosopher, struct timeval *now)
 	};
 
 	nr_colors = sizeof(colors) / sizeof(char *);
-	timestamp = calc_ms_passed(&(philosopher->settings->start_time), now);
-	printf("%s%5zu", colors[(philosopher->nr - 1) % nr_colors], timestamp);
+	timestamp = calc_ms_passed(start_time, now);
+	printf("%s%5zu", colors[(philo_nr - 1) % nr_colors], timestamp);
 }
 
 /*
