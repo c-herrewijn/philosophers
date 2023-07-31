@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/11 15:34:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 21:04:31 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 22:28:50 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void	print_philo_died(t_data *data, t_settings *settings, t_locks *locks,
 	struct timeval *now)
 {
 	size_t		i;
-	size_t		time_of_death;
 	long int	last_eaten_sec;
 	int			last_eaten_usec;
 
@@ -52,8 +51,9 @@ static void	print_philo_died(t_data *data, t_settings *settings, t_locks *locks,
 		if (data->philosophers[i]->last_eaten.tv_sec == last_eaten_sec
 			&& data->philosophers[i]->last_eaten.tv_usec == last_eaten_usec)
 		{
-			time_of_death = calc_ms_passed(&(settings->start_time), now);
-			printf("%5zu %zu died\n", time_of_death, data->philosophers[i]->nr);
+			print_timestamp(&(settings->start_time), now,
+				data->philosophers[i]->nr);
+			printf(" %zu died\n", data->philosophers[i]->nr);
 			pthread_mutex_unlock(&(locks->settings_lock));
 			pthread_mutex_unlock(&(locks->print_lock));
 			break ;
