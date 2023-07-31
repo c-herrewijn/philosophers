@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/25 18:03:37 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 13:15:25 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 # include <stdbool.h>
 # include <pthread.h>
 # include <sys/time.h>
+
+# define ANSI_RED		"\x1b[31m"
+# define ANSI_GREEN		"\x1b[32m"
+# define ANSI_YELLOW	"\x1b[33m"
+# define ANSI_BLUE		"\x1b[34m"
+# define ANSI_MAGENTA	"\x1b[35m"
+# define ANSI_CYAN		"\x1b[36m"
 
 typedef struct s_settings
 {
@@ -75,5 +82,7 @@ int				philo_sleep(t_philosopher *philosopher);
 int				philo_think(t_philosopher *philosopher);
 void			monitoring(t_data *data, t_settings *settings, t_locks *locks);
 bool			check_simul_running(t_settings *settings, t_locks *locks);
+void			print_timestamp(t_philosopher *philosopher,
+					struct timeval *now);
 
 #endif

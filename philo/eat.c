@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:29:51 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/25 18:09:08 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 13:21:35 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	give_priority(t_philosopher *philosopher)
 static int	take_fork_left(t_philosopher *philosopher)
 {
 	struct timeval	now;
-	size_t			timestamp;
 
 	pthread_mutex_lock(philosopher->fork_left);
 	if (check_simul_running(philosopher->settings, philosopher->locks)
@@ -45,8 +44,8 @@ static int	take_fork_left(t_philosopher *philosopher)
 	}
 	pthread_mutex_lock(&(philosopher->locks->print_lock));
 	gettimeofday(&now, NULL);
-	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
-	printf("%5zu %zu has taken a fork\n", timestamp, philosopher->nr);
+	print_timestamp(philosopher, &now);
+	printf(" %zu has taken a fork\n", philosopher->nr);
 	pthread_mutex_unlock(&(philosopher->locks->print_lock));
 	return (0);
 }
@@ -54,7 +53,6 @@ static int	take_fork_left(t_philosopher *philosopher)
 static int	take_fork_right(t_philosopher *philosopher, size_t time_to_eat)
 {
 	struct timeval	now;
-	size_t			timestamp;
 
 	pthread_mutex_lock(philosopher->fork_right);
 	if (check_simul_running(philosopher->settings, philosopher->locks)
@@ -67,12 +65,13 @@ static int	take_fork_right(t_philosopher *philosopher, size_t time_to_eat)
 	pthread_mutex_lock(&(philosopher->locks->print_lock));
 	pthread_mutex_lock(&(philosopher->locks->settings_lock));
 	gettimeofday(&now, NULL);
-	timestamp = calc_ms_passed(&(philosopher->settings->start_time), &now);
 	philosopher->times_eaten += 1;
 	philosopher->last_eaten = now;
 	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
-	printf("%5zu %zu has taken a fork\n", timestamp, philosopher->nr);
-	printf("%5zu %zu is eating\n", timestamp, philosopher->nr); 
+	print_timestamp(philosopher, &now);
+	printf(" %zu has taken a fork\n", philosopher->nr);
+	print_timestamp(philosopher, &now);
+	printf(" %zu is eating\n", philosopher->nr);
 	pthread_mutex_unlock(&(philosopher->locks->print_lock));
 	ms_sleep(time_to_eat, &now, philosopher->settings, philosopher->locks);
 	pthread_mutex_unlock(philosopher->fork_left);
