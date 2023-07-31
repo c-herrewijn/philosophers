@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/25 18:10:39 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 21:34:35 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,17 @@ void	*thread_function(void *input)
 	t_philosopher	*philosopher;
 
 	philosopher = (t_philosopher *)input;
+	if (eaten_enough(philosopher) == true || philo_think(philosopher) < 0)
+		return (NULL);
 	while (true)
 	{
 		if (eaten_enough(philosopher) == false)
 		{
-			if (philo_think(philosopher) < 0)
-				break ;
 			if (philo_eat(philosopher) < 0)
 				break ;
 			if (philo_sleep(philosopher) < 0)
+				break ;
+			if (philo_think(philosopher) < 0)
 				break ;
 		}
 		else
