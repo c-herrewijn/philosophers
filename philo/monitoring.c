@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/11 15:34:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/25 18:10:19 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/07/31 21:04:31 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static bool	all_done_eating(t_data *data, t_settings *settings, t_locks *locks)
 		}
 		i++;
 	}
+	settings->simul_running = false;
 	pthread_mutex_unlock(&(locks->settings_lock));
 	return (true);
 }
