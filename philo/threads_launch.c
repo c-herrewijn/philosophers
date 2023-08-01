@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:43:34 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/13 15:00:57 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/01 11:45:42 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,50 +22,19 @@ bool	check_simul_running(t_settings *settings, t_locks *locks)
 	return (simul_running);
 }
 
-void	*thread_function(void *input)
+static bool	eaten_enough(t_philosopher	*philosopher)
 {
-	t_philosopher	*philosopher;
-	int				nr_to_eat;
-
-	philosopher = (t_philosopher *)input;
 	pthread_mutex_lock(&(philosopher->locks->settings_lock));
-	nr_to_eat = philosopher->settings->nr_to_eat;
-	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
-	while (true)
+	if (philosopher->times_eaten == philosopher->settings->nr_to_eat)
 	{
-		pthread_mutex_lock(&(philosopher->locks->settings_lock));
-		if (philosopher->times_eaten == nr_to_eat)
-		{
-			pthread_mutex_unlock(&(philosopher->locks->settings_lock));
-			break ;
-		}
 		pthread_mutex_unlock(&(philosopher->locks->settings_lock));
-		if (check_simul_running(philosopher->settings, philosopher->locks))
-			philo_eat(philosopher);
-		else
-			break ;
-		if (philosopher->fork_left == philosopher->fork_right)
-		{
-			while (true)
-			{
-				if (!check_simul_running(philosopher->settings, philosopher->locks))
-					return (NULL);
-			}
-		}
-		if (check_simul_running(philosopher->settings, philosopher->locks))
-			philo_sleep(philosopher);
-		else
-			break ;
-		if (check_simul_running(philosopher->settings, philosopher->locks))
-			philo_think(philosopher);
-		else
-			break ;
+		return (true);
 	}
-	return (NULL);
+	pthread_mutex_unlock(&(philosopher->locks->settings_lock));
+	return (false);
 }
 
-int	launch_threads(t_settings *settings, t_philosopher **philosophers,
-	pthread_t **threads)
+static int	set_start_time(t_settings *settings, t_philosopher **philosophers)
 {
 	size_t		i;
 
@@ -80,12 +49,50 @@ int	launch_threads(t_settings *settings, t_philosopher **philosophers,
 		philosophers[i]->last_eaten = settings->start_time;
 		i++;
 	}
+	return (0);
+}
+
+void	*thread_function(void *input)
+{
+	t_philosopher	*philosopher;
+
+	philosopher = (t_philosopher *)input;
+	if (eaten_enough(philosopher) == true || philo_think(philosopher) < 0)
+		return (NULL);
+	while (true)
+	{
+		if (eaten_enough(philosopher) == false)
+		{
+			if (philo_eat(philosopher) < 0)
+				break ;
+			if (philo_sleep(philosopher) < 0)
+				break ;
+			if (philo_think(philosopher) < 0)
+				break ;
+		}
+		else
+			break ;
+	}
+	return (NULL);
+}
+
+// set 'start_time' and init 'last_eaten' before launching threads
+int	launch_threads(t_settings *settings, t_philosopher **philosophers,
+	pthread_t **threads, t_locks *locks)
+{
+	size_t		i;
+
+	if (set_start_time(settings, philosophers) < 0)
+		return (-1);
 	i = 0;
 	while (i < settings->nr_philo)
 	{
 		if (pthread_create(threads[i], NULL, thread_function,
 				(void *)(philosophers[i])) < 0)
 		{
+			pthread_mutex_lock(&(locks->settings_lock));
+			settings->simul_running = false;
+			pthread_mutex_unlock(&(locks->settings_lock));
 			printf("pthread_create error");
 			return (-1);
 		}

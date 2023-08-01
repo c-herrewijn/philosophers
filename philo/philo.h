@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/13 15:05:08 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/01 11:36:04 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 # include <stdbool.h>
 # include <pthread.h>
 # include <sys/time.h>
+
+# define ANSI_RED		"\x1b[31m"
+# define ANSI_GREEN		"\x1b[32m"
+# define ANSI_YELLOW	"\x1b[33m"
+# define ANSI_BLUE		"\x1b[34m"
+# define ANSI_MAGENTA	"\x1b[35m"
+# define ANSI_CYAN		"\x1b[36m"
 
 typedef struct s_settings
 {
@@ -65,16 +72,18 @@ void			destroy_and_free_cutlery(pthread_mutex_t **forks);
 void			free_philosophers(t_philosopher **philosophers);
 void			free_thread_arr(pthread_t **threads);
 int				launch_threads(t_settings *settings,
-					t_philosopher **philosophers, pthread_t **threads);
+					t_philosopher **philosophers, pthread_t **threads,
+					t_locks *locks);
 void			ms_sleep(size_t ms, struct timeval *start, t_settings *settings,
 					t_locks *locks);
-struct timeval	print_timestamp(t_settings *settings,
-					pthread_mutex_t *settings_lock);
+void			ms_sleep_pure(size_t ms, struct timeval *start);
 size_t			calc_ms_passed(struct timeval *start, struct timeval *end);
-void			philo_eat(t_philosopher *philosopher);
-void			philo_sleep(t_philosopher *philosopher);
-void			philo_think(t_philosopher *philosopher);
+int				philo_eat(t_philosopher *philo);
+int				philo_sleep(t_philosopher *philo);
+int				philo_think(t_philosopher *philo);
 void			monitoring(t_data *data, t_settings *settings, t_locks *locks);
 bool			check_simul_running(t_settings *settings, t_locks *locks);
+void			print_timestamp(struct timeval *start_time, struct timeval *now,
+					size_t philo_nr);
 
 #endif
