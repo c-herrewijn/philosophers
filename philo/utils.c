@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_atoi.c                                          :+:    :+:            */
+/*   utils.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/19 15:06:52 by cherrewi      #+#    #+#                 */
-/*   Updated: 2022/10/23 12:18:40 by cherrewi      ########   odam.nl         */
+/*   Created: 2023/08/01 17:58:18 by cherrewi      #+#    #+#                 */
+/*   Updated: 2023/08/01 18:14:18 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
+
+static int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
 
 /*
 Atoi = Array To Integer
@@ -43,4 +48,48 @@ int	ft_atoi(const char *str)
 		str++;
 	}
 	return ((sign) * (num));
+}
+
+/*
+check if string has format:
+optionally starts with a plus '+' or minus '-' sign
+only consists of digits [0-9]
+is within range [INT_MIN, INT_MAX]
+*/
+bool	ft_isinteger(char *int_str)
+{
+	int			i;
+	int			sign;
+	long int	num;
+
+	if (int_str == NULL || int_str[0] == '\0')
+		return (false);
+	i = 0;
+	sign = 1;
+	if (int_str[0] == '-')
+		sign = -1;
+	if (int_str[0] == '-' || int_str[0] == '+')
+		i++;
+	num = 0;
+	while (int_str[i] != '\0')
+	{
+		if (ft_isdigit(int_str[i]) == false)
+			return (false);
+		num = num * 10;
+		num = num + (int_str[i] - 48);
+		i++;
+	}
+	num = num * sign;
+	return (num >= INT_MIN && num <= INT_MAX);
+}
+
+/*
+check if string has format:
+optionally starts with a plus '+' or minus '-' sign
+only consists of digits [0-9]
+is within range [1, INT_MAX]
+*/
+bool	ft_is_pos_integer(char *int_str)
+{
+	return (ft_isinteger(int_str) && ft_atoi(int_str) > 0);
 }

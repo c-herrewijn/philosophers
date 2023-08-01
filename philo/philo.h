@@ -6,19 +6,20 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/01 11:36:04 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/01 18:12:12 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "libft.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <stdbool.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <unistd.h>
+# include <limits.h>
 
 # define ANSI_RED		"\x1b[31m"
 # define ANSI_GREEN		"\x1b[32m"
@@ -85,5 +86,7 @@ void			monitoring(t_data *data, t_settings *settings, t_locks *locks);
 bool			check_simul_running(t_settings *settings, t_locks *locks);
 void			print_timestamp(struct timeval *start_time, struct timeval *now,
 					size_t philo_nr);
+bool			ft_is_pos_integer(char *int_str);
+int				ft_atoi(const char *str);
 
 #endif
