@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/21 13:34:47 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/01 15:43:34 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/01 15:58:35 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 check if string has format:
 optionally starts with a plus '+' or minus '-' sign
 only consists of digits [0-9]
-is within range [0, INT_MAX]
+is within range [1, INT_MAX]
 */
 bool	ft_is_pos_integer(char *int_str)
 {
