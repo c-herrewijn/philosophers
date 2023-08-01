@@ -1,7 +1,5 @@
 NAME = philo
 CFLAGS = -Wall -Wextra -Werror
-# CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
-# CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 IFLAGS = -I$(LIBFT_DIR)
 LFLAGS = -L$(LIBFT_DIR) -lft
 
