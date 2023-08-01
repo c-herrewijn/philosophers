@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 20:10:14 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/01 11:36:04 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void			destroy_and_free_cutlery(pthread_mutex_t **forks);
 void			free_philosophers(t_philosopher **philosophers);
 void			free_thread_arr(pthread_t **threads);
 int				launch_threads(t_settings *settings,
-					t_philosopher **philosophers, pthread_t **threads);
+					t_philosopher **philosophers, pthread_t **threads,
+					t_locks *locks);
 void			ms_sleep(size_t ms, struct timeval *start, t_settings *settings,
 					t_locks *locks);
 void			ms_sleep_pure(size_t ms, struct timeval *start);

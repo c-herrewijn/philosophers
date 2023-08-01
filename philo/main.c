@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/26 11:55:02 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 13:00:29 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/01 11:36:22 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int argc, char *argv[])
 		destroy_mutex_locks(&locks);
 		return (1);
 	}
-	if (launch_threads(&settings, data.philosophers, data.threads) < 0)
+	if (launch_threads(&settings, data.philosophers, data.threads, &locks) < 0)
 	{
 		free_all(&data, &locks);
 		return (1);
