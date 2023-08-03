@@ -6,13 +6,15 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 16:03:41 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/03 18:40:37 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/03 19:24:40 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
+# define NAME_SEM_FORKS "fork_stack"
 
+# include <errno.h>
 # include <limits.h>
 # include <semaphore.h>
 # include <stdbool.h>
@@ -32,6 +34,7 @@ typedef struct s_philosopher
 typedef struct s_data
 {
 	t_philosopher	**philosophers;
+	sem_t			*sem_forks;
 }	t_data;
 
 typedef struct s_settings
@@ -47,6 +50,8 @@ typedef struct s_settings
 
 int				parse_input(int argc, char *argv[], t_settings *settings);
 t_philosopher	**create_philosophers(t_settings *settings);
+int				philo_life(t_data *data, t_settings *settings,
+					t_philosopher *philosopher);
 
 // utils
 bool			ft_is_pos_integer(char *int_str);
