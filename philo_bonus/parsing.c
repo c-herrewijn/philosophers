@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 19:36:47 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/02 13:54:33 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/03 17:14:29 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ static bool	input_valid(int argc, char *argv[])
 		&& ft_is_pos_integer(argv[3]) && ft_is_pos_integer(argv[4])
 		&& (argc == 5 || ft_is_pos_integer(argv[5])))
 	{
+		if (ft_atoi(argv[1]) > SEM_VALUE_MAX)
+		{
+			printf("invalid input: too many philosophers\n");
+			return (false);
+		}
 		return (true);
 	}
 	else

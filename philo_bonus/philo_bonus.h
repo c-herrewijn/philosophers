@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 16:03:41 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/02 13:57:03 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/03 17:10:29 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_BONUS_H
 
 # include <limits.h>
+# include <semaphore.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <sys/time.h>
