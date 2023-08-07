@@ -6,11 +6,17 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 15:54:44 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/03 19:23:59 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/07 21:25:58 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+static void	unlink_lock_semaphores(void)
+{
+	sem_unlink(NAME_SEM_PRINT_LOCK);
+	sem_unlink(NAME_SEM_SETTING_LOCK);
+}
 
 int	create_semaphore(char *sem_name, size_t value, sem_t **sem)
 {
@@ -31,30 +37,33 @@ int	create_semaphore(char *sem_name, size_t value, sem_t **sem)
 	return (0);
 }
 
-int	launch_philo_processes(t_data *data, t_settings *settings)
+static int	wait_philo_processes(t_settings *settings, t_philosopher **philos)
 {
 	size_t	i;
-	pid_t	new_pid;
+	pid_t	return_pid;
+	int		stat_loc;
 
 	i = 0;
 	while (i < settings->nr_philo)
 	{
-		new_pid = fork();
-		if (new_pid == 0)
+		return_pid = waitpid(philos[i]->pid, &stat_loc, 0);
+		if (return_pid == -1)
 		{
-			printf("philo nr: %zu is alive!\n", data->philosophers[i]->nr);
-			if (philo_life(data, settings, data->philosophers[i]) < 0)
-				exit(1);
-			else
-				exit(0);
+			perror(NULL);
+			return (-1);
 		}
-		data->philosophers[i]->pid = new_pid;
+		if (WEXITSTATUS(stat_loc) != 0)
+		{
+			printf("philosopher process exited with status: %d\n",
+				WEXITSTATUS(stat_loc));
+			return (-1);
+		}
 		i++;
 	}
 	return (0);
 }
 
-int	init_data(t_data *data, t_settings *settings)
+static int	init_data(t_data *data, t_settings *settings)
 {
 	data->philosophers = NULL;
 	data->philosophers = create_philosophers(settings);
@@ -63,9 +72,12 @@ int	init_data(t_data *data, t_settings *settings)
 	if (create_semaphore(NAME_SEM_FORKS, settings->nr_philo,
 			&(data->sem_forks)) < 0)
 	{
+		free_philosophers(data->philosophers);
+		data->philosophers = NULL;
 		printf("error creating semaphore");
 		return (-1);
 	}
+	settings->simul_running = true;
 	return (0);
 }
 
@@ -73,10 +85,17 @@ int	main(int argc, char *argv[])
 {
 	t_settings	settings;
 	t_data		data;
+	t_locks		locks;
 
-	if (parse_input(argc, argv, &settings) < 0)
+	setbuf(stdout, NULL); // debug only, to write to file in order
+	if (parse_input(argc, argv, &settings, &locks) < 0)
 		return (1);
-	init_data(&data, &settings);
-	launch_philo_processes(&data, &settings);
+	if (init_data(&data, &settings) < 0)
+	{
+		unlink_lock_semaphores();
+		return (1);
+	}
+	launch_philo_processes(&data, &settings, &locks);
+	wait_philo_processes(&settings, data.philosophers);
 	return (0);
 }
