@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/04 14:45:22 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/07 21:29:09 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/08 14:31:33 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ static int	set_start_time(t_settings *settings, t_philosopher **philosophers)
 	return (0);
 }
 
+static void	fork_error(t_settings *settings, t_locks *locks)
+{
+	sem_wait(locks->settings_lock);
+	settings->simul_running = false;
+	sem_post(locks->settings_lock);
+	printf("fork error\n");
+}
+
 int	launch_philo_processes(t_data *data, t_settings *settings, t_locks *locks)
 {
 	size_t	i;
@@ -43,10 +51,7 @@ int	launch_philo_processes(t_data *data, t_settings *settings, t_locks *locks)
 		new_pid = fork();
 		if (new_pid < 0)
 		{
-			sem_wait(locks->settings_lock);
-			settings->simul_running = false;
-			sem_post(locks->settings_lock);
-			printf("fork error\n");
+			fork_error(settings, locks);
 			return (-1);
 		}
 		if (new_pid == 0)
