@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 16:03:41 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/07 21:33:30 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/09 19:45:41 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <errno.h>
 # include <limits.h>
 # include <semaphore.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -78,15 +79,12 @@ int				philo_sleep(t_data *data, t_settings *settings,
 					t_philosopher *philo, t_locks *locks);
 int				philo_think(t_settings *settings, t_philosopher *philo,
 					t_locks *locks);
-bool			check_simul_running(t_settings *settings, t_locks *locks);
 
 // time utils
-void			ms_sleep(size_t ms, struct timeval *start, t_settings *settings,
-					t_locks *locks);
-void			ms_sleep_pure(size_t ms, struct timeval *start);
+void			ms_sleep(size_t ms, struct timeval *start);
 size_t			calc_ms_passed(struct timeval *start, struct timeval *end);
-void			print_timestamp(struct timeval *start_time, struct timeval *now,
-					size_t philo_nr);
+void			print_timestamp(struct timeval *start_time,
+					struct timeval *now, size_t philo_nr);
 
 // utils
 bool			ft_is_pos_integer(char *int_str);
