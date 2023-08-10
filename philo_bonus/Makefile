@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 # CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 SRCS =	main.c eat.c parsing.c philo_life.c philosophers.c process_launch.c \
-		sleep_think.c time_utils.c utils.c
+		semaphores.c sleep_think.c time_utils.c utils.c
 OBJ_DIR = obj
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 

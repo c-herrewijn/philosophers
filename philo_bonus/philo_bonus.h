@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 16:03:41 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/09 19:45:41 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/10 16:07:59 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # define NAME_SEM_FORKS "fork_stack"
 # define NAME_SEM_PRINT_LOCK "print_lock"
 # define NAME_SEM_SETTING_LOCK "settings_lock"
+# define NAME_SEM_KILL_SWITCH "kill_switch"
+# define NAME_SEM_ALL_EATEN "all_eaten"
+
 # define ANSI_RED		"\x1b[31m"
 # define ANSI_GREEN		"\x1b[32m"
 # define ANSI_YELLOW	"\x1b[33m"
@@ -51,6 +54,8 @@ typedef struct s_locks
 {
 	sem_t			*print_lock;
 	sem_t			*settings_lock;
+	sem_t			*kill_switch;
+	sem_t			*all_eaten;
 }	t_locks;
 
 typedef struct s_settings
@@ -64,10 +69,11 @@ typedef struct s_settings
 	bool			simul_running;	
 }	t_settings;
 
-int				parse_input(int argc, char *argv[], t_settings *settings,
-					t_locks *locks);
+int				parse_input(int argc, char *argv[], t_settings *settings);
 t_philosopher	**create_philosophers(t_settings *settings);
-int				create_semaphore(char *sem_name, size_t value, sem_t **sem);
+int				create_semaphores(t_data *data, t_settings *settings,
+					t_locks *locks);
+void			unlink_semaphores(void);
 int				launch_philo_processes(t_data *data, t_settings *settings,
 					t_locks *locks);
 int				philo_life(t_data *data, t_settings *settings,
