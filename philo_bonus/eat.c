@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/04 16:28:42 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/09 19:39:19 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/10 16:40:57 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,34 @@ static void	single_philo(t_data *data, t_settings *settings,
 		;
 }
 
+// odd philosophers have priority in the first round
+static void	give_priority(t_philosopher *philo, t_settings *settings)
+{
+	int				times_eaten;
+	size_t			philo_nr;
+	size_t			time_to_eat;
+	struct timeval	now;
+
+	times_eaten = philo->times_eaten;
+	philo_nr = philo->nr;
+	time_to_eat = settings->time_to_eat;
+	if (times_eaten == 0 && philo_nr % 2 == 0)
+	{
+		gettimeofday(&now, NULL);
+		ms_sleep(1 + time_to_eat / 2, &now);
+	}
+}
+
 int	philo_eat(t_data *data, t_settings *settings, t_philosopher *philo,
 	t_locks *locks)
 {
+	size_t	times_eaten;
+
+	sem_wait(locks->settings_lock);
+	times_eaten = philo->times_eaten;
+	sem_post(locks->settings_lock);
+	if (times_eaten == 0)
+		give_priority(philo, settings);
 	if (settings->nr_philo == 1)
 	{
 		single_philo(data, settings, philo, locks);
