@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/04 16:28:42 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/10 16:40:57 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/16 20:20:50 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	give_priority(t_philosopher *philo, t_settings *settings)
 	}
 }
 
-int	philo_eat(t_data *data, t_settings *settings, t_philosopher *philo,
+void	philo_eat(t_data *data, t_settings *settings, t_philosopher *philo,
 	t_locks *locks)
 {
 	size_t	times_eaten;
@@ -84,14 +84,10 @@ int	philo_eat(t_data *data, t_settings *settings, t_philosopher *philo,
 	if (times_eaten == 0)
 		give_priority(philo, settings);
 	if (settings->nr_philo == 1)
-	{
 		single_philo(data, settings, philo, locks);
-		return (-1);
-	}
 	else
 	{
 		take_first_fork(data, settings, philo, locks);
 		take_second_fork(data, settings, philo, locks);
 	}
-	return (0);
 }

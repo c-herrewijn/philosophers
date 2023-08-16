@@ -6,13 +6,13 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/04 16:28:46 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/09 19:40:51 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/16 20:06:15 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	philo_sleep(t_data *data, t_settings *settings,
+void	philo_sleep(t_data *data, t_settings *settings,
 	t_philosopher *philo, t_locks *locks)
 {
 	size_t			time_to_sleep;
@@ -27,10 +27,9 @@ int	philo_sleep(t_data *data, t_settings *settings,
 	sem_post(locks->print_lock);
 	time_to_sleep = settings->time_to_sleep;
 	ms_sleep(time_to_sleep, &now);
-	return (0);
 }
 
-int	philo_think(t_settings *settings, t_philosopher *philo, t_locks *locks)
+void	philo_think(t_settings *settings, t_philosopher *philo, t_locks *locks)
 {
 	struct timeval	now;
 
@@ -39,5 +38,4 @@ int	philo_think(t_settings *settings, t_philosopher *philo, t_locks *locks)
 	print_timestamp(&(settings->start_time), &now, philo->nr);
 	printf(" %zu is thinking\n", philo->nr);
 	sem_post(locks->print_lock);
-	return (0);
 }

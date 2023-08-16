@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 16:03:41 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/16 16:22:22 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/16 20:03:30 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,11 @@ int				launch_philo_processes(t_data *data, t_settings *settings,
 int				philo_life(t_data *data, t_settings *settings,
 					t_philosopher *philosopher, t_locks *locks);
 void			free_philosophers(t_philosopher **philosophers);
-int				philo_eat(t_data *data, t_settings *settings,
+void			philo_eat(t_data *data, t_settings *settings,
 					t_philosopher *philo, t_locks *locks);
-int				philo_sleep(t_data *data, t_settings *settings,
+void			philo_sleep(t_data *data, t_settings *settings,
 					t_philosopher *philo, t_locks *locks);
-int				philo_think(t_settings *settings, t_philosopher *philo,
+void			philo_think(t_settings *settings, t_philosopher *philo,
 					t_locks *locks);
 
 // time utils
