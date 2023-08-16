@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 16:03:41 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/10 16:07:59 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/16 16:22:22 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 # include <errno.h>
 # include <limits.h>
+# include <pthread.h>
 # include <semaphore.h>
 # include <signal.h>
 # include <stdbool.h>
@@ -68,6 +69,15 @@ typedef struct s_settings
 	struct timeval	start_time;
 	bool			simul_running;	
 }	t_settings;
+
+typedef struct s_monitor_data
+{
+	t_philosopher	*philo;
+	size_t			time_to_die;
+	t_locks			*sem_locks;
+	sem_t			*settings_lock;
+	struct timeval	*start_time;
+}	t_monitor_data;
 
 int				parse_input(int argc, char *argv[], t_settings *settings);
 t_philosopher	**create_philosophers(t_settings *settings);

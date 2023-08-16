@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/10 15:55:10 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/10 16:08:23 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/15 16:21:49 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	create_semaphore(char *sem_name, size_t value, sem_t **sem)
 			else
 				return (0);
 		}
+		return (-1);
 	}
 	return (0);
 }

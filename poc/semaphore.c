@@ -27,6 +27,7 @@ int create_semaphore(char *sem_name, size_t value, sem_t **sem)
 			else
 				return(0);
 		}
+		return(-1);
 	}
 	return(0);
 }

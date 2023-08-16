@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/04 14:45:22 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/08 14:31:33 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/16 16:33:50 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,62 @@ static int	set_start_time(t_settings *settings, t_philosopher **philosophers)
 	return (0);
 }
 
-static void	fork_error(t_settings *settings, t_locks *locks)
+static void	*f_mon_thread(void *input)
 {
-	sem_wait(locks->settings_lock);
-	settings->simul_running = false;
-	sem_post(locks->settings_lock);
-	printf("fork error\n");
+	t_monitor_data	*mon_data;
+	struct timeval	last_eaten;
+	struct timeval	now;
+
+	mon_data = (t_monitor_data *)input;
+	while (true)
+	{
+		gettimeofday(&now, NULL);
+		sem_wait(mon_data->settings_lock);
+		last_eaten = mon_data->philo->last_eaten;
+		sem_post(mon_data->settings_lock);
+		if (calc_ms_passed(&last_eaten, &now) >= mon_data->time_to_die)
+		{
+			sem_wait(mon_data->sem_locks->print_lock);
+			gettimeofday(&now, NULL);
+			print_timestamp(mon_data->start_time, &now, mon_data->philo->nr);
+			printf(" %zu died\n", mon_data->philo->nr);
+			sem_post(mon_data->sem_locks->print_lock); // debug, maybe never 'unlock'
+			sem_post(mon_data->sem_locks->kill_switch);
+			break ;
+		}
+		usleep(200);
+	}
+	return (NULL);
+}
+
+static int	launch_starvation_monitor(t_monitor_data *mon_data)
+{
+	pthread_t		mon_thread;
+
+	if (pthread_create(&mon_thread, NULL, f_mon_thread, (void *)mon_data) < 0)
+	{
+		printf("pthread_create error\n");
+		return (-1);
+	}
+	return (0);
+}
+
+static int	philo_main(t_data *data, t_settings *settings, t_philosopher *philosopher,
+	t_locks *locks)
+{
+	t_monitor_data	mon_data;
+
+	mon_data.philo = philosopher;
+	mon_data.time_to_die = settings->time_to_die;
+	mon_data.sem_locks = locks;
+	mon_data.settings_lock = locks->settings_lock;
+	mon_data.start_time = &(settings->start_time);
+	if (launch_starvation_monitor(&mon_data) < 0)
+		exit(1);
+	if (philo_life(data, settings, philosopher, locks) < 0)
+		exit(1);
+	else
+		exit(0);
 }
 
 int	launch_philo_processes(t_data *data, t_settings *settings, t_locks *locks)
@@ -51,12 +101,12 @@ int	launch_philo_processes(t_data *data, t_settings *settings, t_locks *locks)
 		new_pid = fork();
 		if (new_pid < 0)
 		{
-			fork_error(settings, locks);
+			printf("fork error\n");
 			return (-1);
 		}
 		if (new_pid == 0)
 		{
-			if (philo_life(data, settings, data->philosophers[i], locks) < 0)
+			if (philo_main(data, settings, data->philosophers[i], locks) < 0)
 				exit(1);
 			else
 				exit(0);
