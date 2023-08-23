@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 16:03:41 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/16 20:03:30 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/23 15:39:06 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct s_settings
 	size_t			time_to_sleep;
 	int				nr_to_eat;
 	struct timeval	start_time;
-	bool			simul_running;	
 }	t_settings;
 
 typedef struct s_monitor_data
@@ -78,6 +77,21 @@ typedef struct s_monitor_data
 	sem_t			*settings_lock;
 	struct timeval	*start_time;
 }	t_monitor_data;
+
+typedef struct s_killswitch_data
+{
+	sem_t			*kill_switch;
+	t_philosopher	**philosophers;
+	size_t			nr_philo;
+}	t_killswitch_data;
+
+typedef struct s_mon_eaten_enough_data
+{
+	t_philosopher	**philosophers;
+	sem_t			*all_eaten;
+	size_t			nr_philo;
+}	t_mon_eaten_enough_data;
+
 
 int				parse_input(int argc, char *argv[], t_settings *settings);
 t_philosopher	**create_philosophers(t_settings *settings);
@@ -95,6 +109,11 @@ void			philo_sleep(t_data *data, t_settings *settings,
 					t_philosopher *philo, t_locks *locks);
 void			philo_think(t_settings *settings, t_philosopher *philo,
 					t_locks *locks);
+int				global_monitor_eaten_enough(t_data *data, t_settings *settings,
+					t_locks *locks,
+					t_mon_eaten_enough_data *mon_eaten_enough_data);
+int				watch_killswitch(t_data *data, t_settings *settings,
+					t_locks *locks, t_killswitch_data *kill_switch_data);
 
 // time utils
 void			ms_sleep(size_t ms, struct timeval *start);

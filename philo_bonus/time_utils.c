@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/04 17:54:48 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/09 15:24:42 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/23 14:54:54 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	print_timestamp(struct timeval *start_time, struct timeval *now,
 		ANSI_RED,
 		ANSI_GREEN,
 		ANSI_YELLOW,
-		ANSI_BLUE,
 		ANSI_MAGENTA,
 		ANSI_CYAN,
+		ANSI_BLUE,
 	};
 
 	nr_colors = sizeof(colors) / sizeof(char *);

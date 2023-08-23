@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 19:36:47 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/10 16:05:35 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/22 14:46:00 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,5 @@ int	parse_input(int argc, char *argv[], t_settings *settings)
 		settings->nr_to_eat = ft_atoi(argv[5]);
 	else
 		settings->nr_to_eat = -1;
-	settings->simul_running = true;
 	return (0);
 }

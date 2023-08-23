@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/04 14:45:22 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/16 16:33:50 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/22 12:44:32 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	*f_mon_thread(void *input)
 			gettimeofday(&now, NULL);
 			print_timestamp(mon_data->start_time, &now, mon_data->philo->nr);
 			printf(" %zu died\n", mon_data->philo->nr);
-			sem_post(mon_data->sem_locks->print_lock); // debug, maybe never 'unlock'
+			// sem_post(mon_data->sem_locks->print_lock); // debug, maybe never 'unlock'
 			sem_post(mon_data->sem_locks->kill_switch);
 			break ;
 		}
