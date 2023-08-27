@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/04 14:45:22 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/22 12:44:32 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/27 22:01:03 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,13 @@ static void	*f_mon_thread(void *input)
 	while (true)
 	{
 		gettimeofday(&now, NULL);
-		sem_wait(mon_data->settings_lock);
 		last_eaten = mon_data->philo->last_eaten;
-		sem_post(mon_data->settings_lock);
 		if (calc_ms_passed(&last_eaten, &now) >= mon_data->time_to_die)
 		{
 			sem_wait(mon_data->sem_locks->print_lock);
 			gettimeofday(&now, NULL);
 			print_timestamp(mon_data->start_time, &now, mon_data->philo->nr);
 			printf(" %zu died\n", mon_data->philo->nr);
-			// sem_post(mon_data->sem_locks->print_lock); // debug, maybe never 'unlock'
 			sem_post(mon_data->sem_locks->kill_switch);
 			break ;
 		}
@@ -70,15 +67,14 @@ static int	launch_starvation_monitor(t_monitor_data *mon_data)
 	return (0);
 }
 
-static int	philo_main(t_data *data, t_settings *settings, t_philosopher *philosopher,
-	t_locks *locks)
+static int	philo_main(t_data *data, t_settings *settings,
+	t_philosopher *philosopher,	t_locks *locks)
 {
 	t_monitor_data	mon_data;
 
 	mon_data.philo = philosopher;
 	mon_data.time_to_die = settings->time_to_die;
 	mon_data.sem_locks = locks;
-	mon_data.settings_lock = locks->settings_lock;
 	mon_data.start_time = &(settings->start_time);
 	if (launch_starvation_monitor(&mon_data) < 0)
 		exit(1);

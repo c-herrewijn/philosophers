@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 16:03:41 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/23 15:39:06 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/27 22:00:33 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # define PHILO_BONUS_H
 # define NAME_SEM_FORKS "fork_stack"
 # define NAME_SEM_PRINT_LOCK "print_lock"
-# define NAME_SEM_SETTING_LOCK "settings_lock"
 # define NAME_SEM_KILL_SWITCH "kill_switch"
 # define NAME_SEM_ALL_EATEN "all_eaten"
 
@@ -54,7 +53,6 @@ typedef struct s_data
 typedef struct s_locks
 {
 	sem_t			*print_lock;
-	sem_t			*settings_lock;
 	sem_t			*kill_switch;
 	sem_t			*all_eaten;
 }	t_locks;
@@ -74,7 +72,6 @@ typedef struct s_monitor_data
 	t_philosopher	*philo;
 	size_t			time_to_die;
 	t_locks			*sem_locks;
-	sem_t			*settings_lock;
 	struct timeval	*start_time;
 }	t_monitor_data;
 
@@ -91,7 +88,6 @@ typedef struct s_mon_eaten_enough_data
 	sem_t			*all_eaten;
 	size_t			nr_philo;
 }	t_mon_eaten_enough_data;
-
 
 int				parse_input(int argc, char *argv[], t_settings *settings);
 t_philosopher	**create_philosophers(t_settings *settings);

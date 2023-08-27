@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/10 15:55:10 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/15 16:21:49 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/27 20:08:41 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ int	create_semaphores(t_data *data, t_settings *settings,
 	if (create_semaphore(NAME_SEM_FORKS, settings->nr_philo,
 			&(data->sem_forks)) < 0
 		|| create_semaphore(NAME_SEM_PRINT_LOCK, 1, &(locks->print_lock)) < 0
-		|| create_semaphore(NAME_SEM_SETTING_LOCK, 1,
-			&(locks->settings_lock)) < 0
 		|| create_semaphore(NAME_SEM_KILL_SWITCH, 0, &(locks->kill_switch)) < 0
 		|| create_semaphore(NAME_SEM_ALL_EATEN, 0, &(locks->all_eaten)) < 0)
 	{
@@ -54,7 +52,6 @@ void	unlink_semaphores(void)
 {
 	sem_unlink(NAME_SEM_FORKS);
 	sem_unlink(NAME_SEM_PRINT_LOCK);
-	sem_unlink(NAME_SEM_SETTING_LOCK);
 	sem_unlink(NAME_SEM_KILL_SWITCH);
 	sem_unlink(NAME_SEM_ALL_EATEN);
 }

@@ -1,7 +1,5 @@
 NAME = philo_bonus
 CFLAGS = -Wall -Wextra -Werror -O3 -flto
-# CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
-# CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 SRCS =	main.c eat.c parsing.c philo_life.c philosophers.c process_launch.c \
 		semaphores.c sleep_think.c time_utils.c utils.c killswitch.c
 OBJ_DIR = obj
