@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 16:03:41 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/27 22:00:33 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/29 16:15:17 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int				global_monitor_eaten_enough(t_data *data, t_settings *settings,
 					t_mon_eaten_enough_data *mon_eaten_enough_data);
 int				watch_killswitch(t_data *data, t_settings *settings,
 					t_locks *locks, t_killswitch_data *kill_switch_data);
+void			give_priority(t_philosopher *philo, t_settings *settings);
 
 // time utils
 void			ms_sleep(size_t ms, struct timeval *start);

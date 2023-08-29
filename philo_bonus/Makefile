@@ -1,7 +1,8 @@
 NAME = philo_bonus
 CFLAGS = -Wall -Wextra -Werror -O3 -flto
 SRCS =	main.c eat.c parsing.c philo_life.c philosophers.c process_launch.c \
-		semaphores.c sleep_think.c time_utils.c utils.c killswitch.c
+		semaphores.c sleep_think.c time_utils.c utils.c killswitch.c \
+		priority.c
 OBJ_DIR = obj
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
