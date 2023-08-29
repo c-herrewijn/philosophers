@@ -9,3 +9,5 @@ obj/
 *.a
 *.out*
 philo/tester
+philo_bonus/tester
+file
