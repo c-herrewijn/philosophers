@@ -6,12 +6,19 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/01 18:12:12 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:05:42 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# define ANSI_RED		"\x1b[31m"
+# define ANSI_GREEN		"\x1b[32m"
+# define ANSI_YELLOW	"\x1b[33m"
+# define ANSI_BLUE		"\x1b[34m"
+# define ANSI_MAGENTA	"\x1b[35m"
+# define ANSI_CYAN		"\x1b[36m"
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -20,13 +27,6 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <limits.h>
-
-# define ANSI_RED		"\x1b[31m"
-# define ANSI_GREEN		"\x1b[32m"
-# define ANSI_YELLOW	"\x1b[33m"
-# define ANSI_BLUE		"\x1b[34m"
-# define ANSI_MAGENTA	"\x1b[35m"
-# define ANSI_CYAN		"\x1b[36m"
 
 typedef struct s_settings
 {

@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/11 15:34:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/31 23:12:43 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:16:44 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	print_philo_died(t_data *data, t_settings *settings, t_locks *locks,
 		if (data->philosophers[i]->last_eaten.tv_sec == last_eaten_sec
 			&& data->philosophers[i]->last_eaten.tv_usec == last_eaten_usec)
 		{
+			gettimeofday(now, NULL);
 			print_timestamp(&(settings->start_time), now,
 				data->philosophers[i]->nr);
 			printf(" %zu died\n", data->philosophers[i]->nr);
@@ -110,7 +111,6 @@ static bool	philo_starved(t_data *data, t_settings *settings, t_locks *locks)
 // stop if all philosophers have eaten enough, or one philo died
 void	monitoring(t_data *data, t_settings *settings, t_locks *locks)
 {
-	struct timeval	now;
 	struct timeval	start_time;
 	int				nr_to_eat;
 
@@ -122,7 +122,6 @@ void	monitoring(t_data *data, t_settings *settings, t_locks *locks)
 			break ;
 		if (philo_starved(data, settings, locks))
 			break ;
-		gettimeofday(&now, NULL);
 		usleep(200);
 	}
 }

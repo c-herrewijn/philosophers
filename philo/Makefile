@@ -1,5 +1,5 @@
 NAME = philo
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -O3 -flto
 
 SRCS =	main.c parsing.c cutlery.c philosophers.c threads_create.c \
 		threads_launch.c time_utils.c eat.c sleep_think.c monitoring.c utils.c
