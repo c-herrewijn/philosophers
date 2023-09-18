@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 13:02:52 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/07/11 11:05:44 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:44:52 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	initiate_mutex(pthread_mutex_t **forks, size_t i)
 	return (0);
 }
 
-// the forks philosophers use to eat are implemented as mutex locks 
+// the forks philosophers use to eat are implemented as mutex locks
 pthread_mutex_t	**create_cutlery(t_settings *settings)
 {
 	pthread_mutex_t	**forks;

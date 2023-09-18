@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/28 14:09:58 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/30 15:05:42 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:44:28 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_settings
 	size_t			time_to_sleep;
 	int				nr_to_eat;
 	struct timeval	start_time;
-	bool			simul_running;	
+	bool			simul_running;
 }	t_settings;
 
 typedef struct s_locks

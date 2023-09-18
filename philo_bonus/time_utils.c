@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/04 17:54:48 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/23 14:54:54 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:45:00 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_timestamp(struct timeval *start_time, struct timeval *now,
 
 /*
 returns end - start in milli seconds
-returns 0 if start > end 
+returns 0 if start > end
 */
 size_t	calc_ms_passed(struct timeval *start, struct timeval *end)
 {

@@ -6,7 +6,7 @@
 /*   By: cherrewi <cherrewi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/09 16:02:50 by cherrewi      #+#    #+#                 */
-/*   Updated: 2023/08/27 21:01:58 by cherrewi      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:44:32 by cherrewi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	watch_killswitch(t_data *data, t_settings *settings,
 int	global_monitor_eaten_enough(t_data *data, t_settings *settings,
 	t_locks *locks, t_mon_eaten_enough_data *mon_eaten_enough_data)
 {
-	pthread_t	mon_eaten_enough_thread;	
+	pthread_t	mon_eaten_enough_thread;
 
 	mon_eaten_enough_data->philosophers = data->philosophers;
 	mon_eaten_enough_data->all_eaten = locks->all_eaten;
